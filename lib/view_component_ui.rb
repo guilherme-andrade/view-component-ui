@@ -2,7 +2,8 @@
 
 require 'view_component_ui/version'
 require 'view_component_ui/engine'
+require 'dry/configurable'
 
 module ViewComponentUI
-  # Your code goes here...
+  extend Dry::Configurable
 end

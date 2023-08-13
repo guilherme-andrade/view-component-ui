@@ -45,7 +45,7 @@ module ViewComponentUI
     end
 
     def options
-      self.class.dry_initializer.attributes(self)
+      self.class.dry_initializer.definitions.keys.index_with { send(_1) }
     end
 
     def call

@@ -173,6 +173,20 @@ module ViewComponentUI
       option :row_gap, default: proc {}, required: false
       option :scale, default: proc {}, required: false
       option :scroll_behavior, default: proc {}, required: false
+      option :scroll_margin_bottom, default: proc {}, required: false
+      option :scroll_margin_left, default: proc {}, required: false
+      option :scroll_margin_right, default: proc {}, required: false
+      option :scroll_margin_top, default: proc {}, required: false
+      option :scroll_padding_bottom, default: proc {}, required: false
+      option :scroll_padding_left, default: proc {}, required: false
+      option :scroll_padding_right, default: proc {}, required: false
+      option :scroll_padding_top, default: proc {}, required: false
+      option :scroll_snap_align, default: proc {}, required: false
+      option :scroll_snap_stop, default: proc {}, required: false
+      option :scroll_snap_type, default: proc {}, required: false
+      option :shape_image_threshold, default: proc {}, required: false
+      option :shape_margin, default: proc {}, required: false
+      option :shape_outside, default: proc {}, required: false
       option :stroke, default: proc {}, required: false
       option :tab_size, default: proc {}, required: false
       option :table_layout, default: proc {}, required: false
@@ -182,13 +196,16 @@ module ViewComponentUI
       option :text_decoration_color, default: proc {}, required: false
       option :text_decoration_line, default: proc {}, required: false
       option :text_decoration_style, default: proc {}, required: false
+      option :text_decoration_thickness, default: proc {}, required: false
       option :text_decoration, default: proc {}, required: false
+      option :text_indent, default: proc {}, required: false
       option :text_justify, default: proc {}, required: false
       option :text_orientation, default: proc {}, required: false
       option :text_overflow, default: proc {}, required: false
       option :text_shadow, default: proc {}, required: false
       option :text_transform, default: proc {}, required: false
       option :text_underline_position, default: proc {}, required: false
+      option :text_underline_offset, default: proc {}, required: false
       option :top, default: proc {}, required: false
       option :transform_box, default: proc {}, required: false
       option :transform_origin, default: proc {}, required: false
@@ -214,214 +231,222 @@ module ViewComponentUI
       option :word_wrap, default: proc {}, required: false
       option :writing_mode, default: proc {}, required: false
       option :z_index, default: proc {}, required: false
+      option :zoom, default: proc {}, required: false
     end
 
-    STYLE_ATTRIBUTES = %i[
-      align_content
-      align_items
-      backface_visibility
-      background_attachment
-      background_blend_mode
-      background_clip
-      background_color
-      background_image
-      background_origin
-      background_position
-      background_repeat
-      background_size
-      bg
-      border_bottom_left_radius
-      border_bottom_right_radius
-      border_bottom
-      border_collapse
-      border_color
-      border_image_outset
-      border_image_repeat
-      border_image_slice
-      border_image_source
-      border_image_width
-      border_image
-      border_left
-      border_radius
-      border_right
-      border_spacing
-      border_style
-      border_top_left_radius
-      border_top_right_radius
-      border_top
-      border_width
-      border
-      bottom
-      box_decoration_break
-      box_shadow
-      box_sizing
-      caption_side
-      clear
-      clip_path
-      clip
-      color_adjust
-      color
-      column_count
-      column_fill
-      column_gap
-      column_rule_color
-      column_rule_style
-      column_rule_width
-      column_rule
-      column_span
-      column_width
-      columns
-      contain
-      _content
-      counter_increment
-      counter_reset
-      cursor
-      direction
-      display
-      empty_cells
-      fill
-      filter
-      flex_basis
-      flex_direction
-      flex_direction
-      flex_grow
-      flex_shrink
-      flex_wrap
-      flex
-      font_family
-      font_feature_settings
-      font_kerning
-      font_language_override
-      font_size
-      font_stretch
-      font_style
-      font_variant_caps
-      font_variant_east_asian
-      font_variant_ligatures
-      font_variant_numeric
-      font_variant_position
-      font_variant
-      font_weight
-      grid_area
-      grid_auto_columns
-      grid_auto_flow
-      grid_auto_rows
-      grid_column
-      grid_gap
-      grid_row
-      grid_template_columns
-      grid_template_rows
-      grid
-      h
-      hanging_punctuation
-      hyphens
-      isolation
-      justify_content
-      justify_items
-      justify_self
-      left
-      letter_spacing
-      line_height
-      list_style_image
-      list_style_position
-      list_style_type
-      m
-      mask_type
-      mask
-      max_h
-      max_w
-      mb
-      min_h
-      min_w
-      mix_blend_mode
-      ml
-      mr
-      mt
-      mx
-      my
-      object_fit
-      object_position
-      object_position
-      opacity
-      order
-      orphans
-      outline_color
-      outline_style
-      outline_width
-      outline
-      overflow
-      p
-      pb
-      perspective_origin
-      perspective
-      pl
-      place_items
-      place_self
-      pointer_events
-      position
-      pr
-      pt
-      px
-      py
-      quotes
-      resize
-      right
-      rotate
-      row_gap
-      scale
-      scroll_behavior
-      stroke
-      tab_size
-      table_layout
-      text_align_last
-      text_align
-      text_combine_upright
-      text_decoration_color
-      text_decoration_line
-      text_decoration_style
-      text_decoration
-      text_justify
-      text_orientation
-      text_overflow
-      text_shadow
-      text_transform
-      text_underline_position
-      top
-      transform_box
-      transform_origin
-      transform_style
-      transform
-      transition_delay
-      transition_duration
-      transition_property
-      transition_timing_function
-      transition
-      unicode_bidi
-      user_select
-      vertical_align
-      visibility
-      w
-      white_space
-      whitespace
-      widows
-      will_change
-      word_break
-      word_spacing
-      word_wrap
-      writing_mode
-      z_index
-    ].freeze
+    STYLE_ATTRIBUTE_TAILWIND_CLASS_TRANSFORMERS = {
+      align_content: proc { |v| "content-#{v.gsub('space-', '')}" },
+      align_items: proc { |v| "items-#{v}" },
+      backface_visibility: proc { |v| v == 'visible' ? 'backface-visible' : 'backface-hidden' },
+      background_attachment: proc { |v| v },
+      background_blend_mode: proc { |v| v },
+      background_clip: proc { |v| v },
+      background_color: proc { |v| "bg-#{v}" },
+      background_image: proc { |v| v },
+      background_origin: proc { |v| v },
+      background_position: proc { |v| v.tr(' ', '-') },
+      background_repeat: proc { |v| v == 'no-repeat' ? 'bg-no-repeat' : 'bg-repeat' },
+      background_size: proc { |v| v },
+      bg: proc { |v| "bg-#{v}" }, # This seems redundant with background_color
+      border_bottom_left_radius: proc { |v| "rounded-bl-#{v}" },
+      border_bottom_right_radius: proc { |v| "rounded-br-#{v}" },
+      border_bottom: proc { |v| "border-b-#{v}" },
+      border_collapse: proc { |v| v },
+      border_color: proc { |v| "border-#{v}" },
+      border_image_outset: proc { |v| v },
+      border_image_repeat: proc { |v| v },
+      border_image_slice: proc { |v| v },
+      border_image_source: proc { |v| v },
+      border_image_width: proc { |v| v },
+      border_image: proc { |v| v },
+      border_left: proc { |v| "border-l-#{v}" },
+      border_radius: proc { |v| "rounded-#{v}" },
+      border_right: proc { |v| "border-r-#{v}" },
+      border_spacing: proc { |v| v },
+      border_style: proc { |v| "border-#{v}" },
+      border_top_left_radius: proc { |v| "rounded-tl-#{v}" },
+      border_top_right_radius: proc { |v| "rounded-tr-#{v}" },
+      border_top: proc { |v| "border-t-#{v}" },
+      border_width: proc { |v| "border-#{v}" },
+      border: proc { |v| "border-#{v}" },
+      bottom: proc { |v| "bottom-#{v}" },
+      box_decoration_break: proc { |v| v },
+      box_shadow: proc { |v| v == 'none' ? 'shadow-none' : "shadow-#{v}" },
+      box_sizing: proc { |v| v },
+      caption_side: proc { |v| v },
+      clear: proc { |v| v },
+      clip_path: proc { |v| v },
+      clip: proc { |v| v },
+      color_adjust: proc { |v| v },
+      color: proc { |v| "text-#{v}" },
+      column_count: proc { |v| v },
+      column_fill: proc { |v| v },
+      column_gap: proc { |v| "gap-x-#{v}" },
+      column_rule_color: proc { |v| v },
+      column_rule_style: proc { |v| v },
+      column_rule_width: proc { |v| v },
+      column_rule: proc { |v| v },
+      column_span: proc { |v| v },
+      column_width: proc { |v| v },
+      columns: proc { |v| v },
+      contain: proc { |v| v },
+      _content: proc { |v| v },
+      counter_increment: proc { |v| v },
+      counter_reset: proc { |v| v },
+      cursor: proc { |v| "cursor-#{v}" },
+      direction: proc { |v| v },
+      display: proc { |v| v },
+      empty_cells: proc { |v| v },
+      fill: proc { |v| v },
+      filter: proc { |v| v },
+      flex_basis: proc { |v| "flex-basis-#{v}" },
+      flex_direction: proc { |v| "flex-#{v}" },
+      flex_grow: proc { |v| "flex-grow-#{v}" },
+      flex_shrink: proc { |v| "flex-shrink-#{v}" },
+      flex_wrap: proc { |v| "flex-#{v}" },
+      flex: proc { |v| v },
+      font_family: proc { |v| "font-#{v}" },
+      font_feature_settings: proc { |v| v },
+      font_kerning: proc { |v| v },
+      font_language_override: proc { |v| v },
+      font_size: proc { |v| "text-#{v}" },
+      font_stretch: proc { |v| v },
+      font_style: proc { |v| v == 'italic' ? 'italic' : 'not-italic' },
+      font_variant_caps: proc { |v| v },
+      font_variant_east_asian: proc { |v| v },
+      font_variant_ligatures: proc { |v| v },
+      font_variant_numeric: proc { |v| v },
+      font_variant_position: proc { |v| v },
+      font_variant: proc { |v| v },
+      font_weight: proc { |v| "font-#{v}" },
+      grid_area: proc { |v| v },
+      grid_auto_columns: proc { |v| v },
+      grid_auto_flow: proc { |v| v },
+      grid_auto_rows: proc { |v| v },
+      grid_column: proc { |v| v },
+      grid_gap: proc { |v| "gap-#{v}" },
+      grid_row: proc { |v| v },
+      grid_template_columns: proc { |v| v },
+      grid_template_rows: proc { |v| v },
+      grid: proc { |v| v },
+      h: proc { |v| "h-#{v}" },
+      hanging_punctuation: proc { |v| v },
+      hyphens: proc { |v| v },
+      isolation: proc { |v| v },
+      justify_content: proc { |v| "justify-#{v}" },
+      justify_items: proc { |v| "justify-items-#{v}" },
+      justify_self: proc { |v| "justify-self-#{v}" },
+      left: proc { |v| "left-#{v}" },
+      letter_spacing: proc { |v| "tracking-#{v}" },
+      line_height: proc { |v| "leading-#{v}" },
+      list_style_image: proc { |v| v },
+      list_style_position: proc { |v| v == 'inside' ? 'list-inside' : 'list-outside' },
+      list_style_type: proc { |v| v },
+      m: proc { |v| "m-#{v}" },
+      mask_type: proc { |v| v },
+      mask: proc { |v| v },
+      max_h: proc { |v| "max-h-#{v}" },
+      max_w: proc { |v| "max-w-#{v}" },
+      mb: proc { |v| "mb-#{v}" },
+      min_h: proc { |v| "min-h-#{v}" },
+      min_w: proc { |v| "min-w-#{v}" },
+      mix_blend_mode: proc { |v| v },
+      ml: proc { |v| "ml-#{v}" },
+      mr: proc { |v| "mr-#{v}" },
+      mt: proc { |v| "mt-#{v}" },
+      mx: proc { |v| "mx-#{v}" },
+      my: proc { |v| "my-#{v}" },
+      object_fit: proc { |v| v },
+      object_position: proc { |v| v.tr(' ', '-') },
+      opacity: proc { |v| "opacity-#{v}" },
+      order: proc { |v| "order-#{v}" },
+      orphans: proc { |v| v },
+      outline_color: proc { |v| "outline-#{v}" },
+      outline_style: proc { |v| v },
+      outline_width: proc { |v| v },
+      outline: proc { |v| v },
+      overflow: proc { |v| "overflow-#{v}" },
+      p: proc { |v| "p-#{v}" },
+      pb: proc { |v| "pb-#{v}" },
+      perspective_origin: proc { |v| v },
+      perspective: proc { |v| v },
+      pl: proc { |v| "pl-#{v}" },
+      place_items: proc { |v| v },
+      place_self: proc { |v| v },
+      pointer_events: proc { |v| "pointer-events-#{v}" },
+      position: proc { |v| v },
+      pr: proc { |v| "pr-#{v}" },
+      pt: proc { |v| "pt-#{v}" },
+      px: proc { |v| "px-#{v}" },
+      py: proc { |v| "py-#{v}" },
+      quotes: proc { |v| v },
+      resize: proc { |v| "resize-#{v}" },
+      right: proc { |v| "right-#{v}" },
+      rotate: proc { |v| v },
+      row_gap: proc { |v| "gap-y-#{v}" },
+      scale: proc { |v| "scale-#{v}" },
+      scroll_behavior: proc { |v| v == 'smooth' ? 'scroll-smooth' : 'scroll-auto' },
+      scroll_margin_bottom: proc { |v| v },
+      scroll_margin_left: proc { |v| v },
+      scroll_margin_right: proc { |v| v },
+      scroll_margin_top: proc { |v| v },
+      scroll_padding_bottom: proc { |v| v },
+      scroll_padding_left: proc { |v| v },
+      scroll_padding_right: proc { |v| v },
+      scroll_padding_top: proc { |v| v },
+      scroll_snap_align: proc { |v| v },
+      scroll_snap_stop: proc { |v| v },
+      scroll_snap_type: proc { |v| v },
+      shape_image_threshold: proc { |v| v },
+      shape_margin: proc { |v| v },
+      shape_outside: proc { |v| v },
+      tab_size: proc { |v| v },
+      table_layout: proc { |v| v == 'auto' ? 'table-auto' : 'table-fixed' },
+      text_align: proc { |v| "text-#{v}" },
+      text_combine_upright: proc { |v| v },
+      text_decoration_color: proc { |v| "underline-#{v}" },
+      text_decoration_line: proc { |v| "line-#{v}" },
+      text_decoration_style: proc { |v| "style-#{v}" },
+      text_decoration_thickness: proc { |v| "thickness-#{v}" },
+      text_decoration: proc { |v| v == 'none' ? 'no-underline' : 'underline' },
+      text_indent: proc { |v| "indent-#{v}" },
+      text_justify: proc { |v| "justify-#{v}" },
+      text_overflow: proc { |v| v },
+      text_shadow: proc { |v| v == 'none' ? 'text-shadow-none' : 'text-shadow' },
+      text_transform: proc { |v| "text-#{v}" },
+      text_underline_offset: proc { |v| v },
+      text_underline_position: proc { |v| v },
+      top: proc { |v| "top-#{v}" },
+      transform: proc { |v| v },
+      transition_delay: proc { |v| v },
+      transition_duration: proc { |v| "duration-#{v}" },
+      transition_property: proc { |v| "transition-#{v}" },
+      transition_timing_function: proc { |v| "ease-#{v}" },
+      transition: proc { |v| v },
+      unicode_bidi: proc { |v| v },
+      user_select: proc { |v| "select-#{v}" },
+      vertical_align: proc { |v| "align-#{v}" },
+      visibility: proc { |v| v == 'visible' ? 'visible' : 'invisible' },
+      white_space: proc { |v| "whitespace-#{v}" },
+      widows: proc { |v| v },
+      w: proc { |v| "w-#{v}" },
+      word_break: proc { |v| "break-#{v}" },
+      word_spacing: proc { |v| "spacing-#{v}" },
+      writing_mode: proc { |v| v },
+      z_index: proc { |v| "z-#{v}" },
+      zoom: proc { |v| v }
+    }.freeze
 
     def class_name
       super.to_s.split(/\s+/).concat(style_classes).join(' ').presence
     end
 
     def style_classes
-      STYLE_ATTRIBUTES.filter_map do |attribute|
+      STYLE_ATTRIBUTE_TAILWIND_CLASS_TRANSFORMERS.keys.filter_map do |attribute|
         value = send(attribute)
         next if value.nil?
 
-        "#{attribute}-#{value}"
+        STYLE_ATTRIBUTE_TAILWIND_CLASS_TRANSFORMERS[attribute].call(value.to_s.dasherize)
       end
     end
   end

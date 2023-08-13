@@ -3,7 +3,7 @@ module ViewComponentUI
     include CSSOptions
 
     def call
-      content_tag(tag, **html_attributes) do
+      content_tag(as, **html_attributes) do
         content
       end
     end
