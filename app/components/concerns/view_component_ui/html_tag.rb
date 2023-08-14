@@ -3,23 +3,23 @@ module ViewComponentUI
     extend ActiveSupport::Concern
 
     included do
-      option :as, Types::Tag | Types.Instance(ViewComponentUI::Base), default: proc { :div }
-      option :accesskey, Types::StringOrNil, default: proc {}
-      option :class_name, Types::StringOrNil, default: proc {}
-      option :contenteditable, Types::BoolOrNil, default: proc {}
-      option :data, Types::HashOrNil, default: proc { {} }
-      option :dir, Types::StringOrNil, default: proc {}
-      option :draggable, Types::BoolOrNil, default: proc {}
-      option :hidden, Types::BoolOrNil, default: proc {}
-      option :id, Types::StringOrNil, default: proc {}
-      option :lang, Types::StringOrNil, default: proc {}
-      option :spellcheck, Types::BoolOrNil, default: proc {}
-      option :style, Types::StringOrNil, default: proc {}
-      option :tabindex, Types::StringOrNil, default: proc {}
-      option :title, Types::StringOrNil, default: proc {}
-      option :translate, Types::BoolOrNil, default: proc {}
-      option :aria, Types::HashOrNil, default: proc { {} }
-      option :role, Types::StringOrNil, default: proc {}
+      option :as, Types::Tag | Types.Instance(ViewComponentUI::Base), default: proc { :div }, reader: true
+      option :accesskey, Types::StringOrNil, default: proc {}, reader: true
+      option :class, Types::StringOrNil, default: proc {}, as: :_class, reader: true
+      option :contenteditable, Types::BoolOrNil, default: proc {}, reader: true
+      option :data, Types::HashOrNil, default: proc { {} }, reader: true
+      option :dir, Types::StringOrNil, default: proc {}, reader: true
+      option :draggable, Types::BoolOrNil, default: proc {}, reader: true
+      option :hidden, Types::BoolOrNil, default: proc {}, reader: true
+      option :id, Types::StringOrNil, default: proc {}, reader: true
+      option :lang, Types::StringOrNil, default: proc {}, reader: true
+      option :spellcheck, Types::BoolOrNil, default: proc {}, reader: true
+      option :style, Types::StringOrNil, default: proc {}, reader: true
+      option :tabindex, Types::StringOrNil, default: proc {}, reader: true
+      option :title, Types::StringOrNil, default: proc {}, reader: true
+      option :translate, Types::BoolOrNil, default: proc {}, reader: true
+      option :aria, Types::HashOrNil, default: proc { {} }, reader: true
+      option :role, Types::StringOrNil, default: proc {}, reader: true
     end
 
     HTML_ATTRIBUTES = %i[
@@ -41,7 +41,7 @@ module ViewComponentUI
     ].freeze
 
     def html_attributes
-      HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: class_name).compact
+      HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: _class).compact
     end
 
     def options

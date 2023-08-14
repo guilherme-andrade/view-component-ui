@@ -29,11 +29,11 @@ module ViewComponentUI
       self.class._color_scheme
     end
 
-    def class_name
+    def _class
       return super unless color_scheme_config
 
-      theme_class_name = instance_eval(&color_scheme_config)
-      "#{super} #{theme_class_name}"
+      theme_class = instance_eval(&color_scheme_config)
+      [super, theme_class].flatten.compact
     end
 
     def color_scheme_token(weight)

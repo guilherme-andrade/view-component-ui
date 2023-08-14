@@ -20,16 +20,16 @@ module ViewComponentUI
     end
 
     def html_attributes
-      variant_config.options(self).except(:class_name).merge(super)
+      variant_config.options(self).except(:class).merge(super)
     end
 
-    def class_name
-      value = variant_config.options(self)[:class_name].then do |cn|
+    def _class
+      value = variant_config.options(self)[:class].then do |cn|
         cn.is_a?(Proc) ? instance_eval(&cn) : cn
       end
       return super if value.blank?
 
-      "#{super} #{value}"
+      [super, value].flatten.compact
     end
 
     class Variant
