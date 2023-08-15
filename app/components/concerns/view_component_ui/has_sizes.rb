@@ -24,12 +24,14 @@ module ViewComponentUI
     end
 
     def _class
-      value = size_config.options(self)[:class].then do |cn|
+      value = size_config.options(self)
+      style_classes = build_style_classes(**value)
+      classes = value[:class].then do |cn|
         cn.is_a?(Proc) ? instance_eval(&cn) : cn
       end
-      return super if value.blank?
+      return super if value.blank? && style_classes.blank?
 
-      [super, value].flatten.compact
+      [super, classes, style_classes].flatten.compact
     end
 
     class Size

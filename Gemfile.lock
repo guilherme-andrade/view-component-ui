@@ -277,6 +277,7 @@ PLATFORMS
 
 DEPENDENCIES
   lookbook
+  parser
   pry (>= 0.12.2)
   puma (~> 6.3)
   rspec-rails (>= 6.0.0)

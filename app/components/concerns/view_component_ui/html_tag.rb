@@ -41,11 +41,12 @@ module ViewComponentUI
     ].freeze
 
     def html_attributes
-      HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: _class).compact
+      class_values = _class.flatten.uniq.compact.join(' ')
+      HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: class_values).compact
     end
 
     def options
-      self.class.dry_initializer.definitions.keys.index_with { send(_1) }
+      self.class.dry_initializer.definitions.except(:class).keys.index_with { send(_1) }
     end
 
     def call

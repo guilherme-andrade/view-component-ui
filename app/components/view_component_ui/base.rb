@@ -9,10 +9,12 @@ module ViewComponentUI
         alias_name = options.delete(:alias)
 
         if alias_name
-          super name, *args, **{ default: proc { send(alias_name) } }.merge(options)
-          super alias_name, *args, **{ default: proc { send(name) } }.merge(options)
+          default_proc = proc { |default_method| proc { send(default_method) } }
+          base_options = { default: default_proc.call(alias_name) }
+          super(name, *args, **base_options.merge(options))
+          super(alias_name, *args, **base_options.merge(options))
         else
-          super
+          super(name, *args, **options)
         end
       end
     end

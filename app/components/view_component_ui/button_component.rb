@@ -4,34 +4,35 @@ module ViewComponentUI
     include HasVariants
     include HasColorScheme
 
+    defaults variant: :solid, size: :md, color_scheme: :primary, tag: :button, type: :button,
+             border_radius: :md, display: :inline_block, cursor: :pointer
+
     variant :solid,
-            class: proc { "bg-#{color_scheme_token(500)} hover:bg-#{color_scheme_token(600)} text-white" }
+            bg: proc { color_scheme_token(500) },
+            color: 'white',
+            _hover: proc { { bg: color_scheme_token(600) } }
 
     variant :outline,
-            class: proc {
-                     "border border-#{color_scheme_token(500)} " \
-                       "hover:bg-#{color_scheme_token(500)} text-#{color_scheme_token(500)} hover:text-white"
-                   }
+            border: 'true',
+            border_color: proc { color_scheme_token(500) },
+            color: proc { color_scheme_token(500) },
+            _hover: proc { { bg: color_scheme_token(500), text: 'white' } }
+
     variant :link,
-            class: proc { "text-#{color_scheme_token(500)} hover:text-#{color_scheme_token(600)}" }
+            color: proc { color_scheme_token(500) },
+            _hover: proc { { color: color_scheme_token(600) } }
+
     variant :ghost,
-            class: proc {
-                     "bg-#{color_scheme_token(100)} hover:bg-#{color_scheme_token(200)} " \
-                       "text-#{color_scheme_token(500)}"
-                   }
+            bg: proc { color_scheme_token(50) },
+            color: proc { color_scheme_token(500) },
+            _hover: proc { { bg: color_scheme_token(100) } }
 
-    size :sm, class: proc { 'text-sm py-1 px-2' }
-    size :md, class: proc { 'text-base py-2 px-4' }
-    size :lg, class: proc { 'text-lg py-3 px-6' }
-
-    option :tag, default: proc { :button }
-    option :type, default: proc { :button }
-    option :border_radius, default: proc { :md }
-    option :display, default: proc { :inline_block }
-    option :cursor, default: proc { :pointer }
+    size :sm, font_size: :sm, py: '1', px: '2'
+    size :md, font_size: :base, py: '2', px: '4'
+    size :lg, font_size: :lg, py: '3', px: '6'
 
     def call
-      render BoxComponent.new(**options) do
+      render BoxComponent.new(**html_attributes) do
         content
       end
     end
