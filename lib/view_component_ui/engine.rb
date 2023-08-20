@@ -17,6 +17,14 @@ module ViewComponentUI
       app.config.assets.paths << Engine.root.join('assets/compiled')
     end
 
-    config.autoload_paths << root.join('app/components')
+    config.autoload_paths << root.join('app/components/layout')
+    config.autoload_paths << root.join('app/components/forms')
+    config.autoload_paths << root.join('app/components/feedback')
+    config.autoload_paths << root.join('app/components/typography')
+    config.autoload_paths << root.join('app/components/media_and_icons')
+    config.autoload_paths << root.join('app/components/data_display')
+    config.autoload_paths << root.join('app/components/navigation')
+    config.autoload_paths << root.join('app/components/overlay')
+    config.autoload_paths << root.join('app/components/other')
   end
 end

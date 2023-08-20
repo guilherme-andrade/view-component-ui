@@ -1,7 +1,8 @@
 ViewComponentUI.configure do |config|
   config.content = [
-    ViewComponentUI::Engine.root.join('app/components/**/*component.rb'),
-    ViewComponentUI::Engine.root.join('app/components/**/*component.html.erb')
+    ViewComponentUI::Engine.root.join('app/components'),
+    ViewComponentUI::Engine.root.join('app/components'),
+    ViewComponentUI::Engine.root.join('spec/components')
   ]
 
   config.pseudo_elements = %i[before after]

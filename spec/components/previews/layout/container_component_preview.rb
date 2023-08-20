@@ -1,5 +1,4 @@
-module ViewComponentUI
-  # @logical_path root
+module Layout
   class ContainerComponentPreview < ViewComponent::Preview
     def default
       render ViewComponentUI::ContainerComponent.new do

@@ -73,4 +73,5 @@ Rails.application.configure do
   config.lookbook.preview_paths += ViewComponentUI::Engine.preview_paths
   config.view_component.show_previews = true
   config.lookbook.project_name = 'ViewComponentUI'
+  config.view_component.default_preview_layout = 'view_component_ui/preview'
 end

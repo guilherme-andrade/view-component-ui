@@ -5,27 +5,27 @@ module ViewComponentUI
     include HasColorScheme
 
     defaults variant: :solid, size: :md, color_scheme: :primary, tag: :button, type: :button,
-             border_radius: :md, display: :inline_block, cursor: :pointer
+             border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { xs: { bg: 'white' } }
 
     variant :solid,
             bg: proc { color_scheme_token(500) },
             color: 'white',
-            _hover: proc { { bg: color_scheme_token(600) } }
+            _hover: { bg: proc { color_scheme_token(600) } }
 
     variant :outline,
             border: 'true',
             border_color: proc { color_scheme_token(500) },
             color: proc { color_scheme_token(500) },
-            _hover: proc { { bg: color_scheme_token(500), text: 'white' } }
+            _hover: { bg: proc { color_scheme_token(500) }, text: 'white' }
 
     variant :link,
             color: proc { color_scheme_token(500) },
-            _hover: proc { { color: color_scheme_token(600) } }
+            _hover: { color: proc { color_scheme_token(600) } }
 
     variant :ghost,
             bg: proc { color_scheme_token(50) },
             color: proc { color_scheme_token(500) },
-            _hover: proc { { bg: color_scheme_token(100) } }
+            _hover: { bg: proc { color_scheme_token(100) } }
 
     size :sm, font_size: :sm, py: '1', px: '2'
     size :md, font_size: :base, py: '2', px: '4'

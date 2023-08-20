@@ -20,7 +20,7 @@ module ViewComponentUI
     end
 
     def html_attributes
-      variant_config.options(self).except(:class).merge(super)
+      size_config.options(self).slice(*HTMLTag::HTML_ATTRIBUTES).merge(super)
     end
 
     def _class

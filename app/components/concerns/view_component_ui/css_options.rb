@@ -4,17 +4,29 @@ module ViewComponentUI
 
     include StyleOptions
 
-    class_methods do
+    class InvalidOptionError < StandardError
+      def initialize(name, value, options)
+        super("Invalid option value #{name}: #{value}.\n\nValid options are: #{options.join(', ')}")
+      end
+    end
+
+    module ClassMethods
       def style_option(name, *args)
         options = args.extract_options!
-        enum_options = options.delete(:options).map(&:to_sym)
+        enum_options = options.delete(:options)
         style_option_property = { options: enum_options, class: options.delete(:class) }
         style_option_properties[name] = style_option_property
         style_option_properties[options[:alias]] = style_option_property
 
-        dasherize_symbol = proc { _1.to_s.dasherize.to_sym }
-        type = Types::Coercible::Symbol.constructor(dasherize_symbol).enum(*enum_options).optional
+        dasherize = proc { _1.to_s.dasherize }
+        type = Types.Constructor(String) do |value|
+          unless enum_options.map(&dasherize).include?(dasherize.call(value)) || value.nil?
+            raise InvalidOptionError.new(name,
+                                         value, enum_options.map(&dasherize))
+          end
 
+          value
+        end
         option name, type, **options.merge(optional: true)
       end
 
@@ -36,6 +48,7 @@ module ViewComponentUI
         base.style_option_properties.merge!(style_option_properties)
       end
     end
+    extend ClassMethods
 
     def initialize(**options)
       options = self.class.default_values.merge(options)
@@ -45,15 +58,17 @@ module ViewComponentUI
 
     UTIL_PROC = proc do |prefix|
       proc do |v|
-        if prefix.nil?
-          v
-        elsif [true, 'true'].include?(v)
-          prefix
-        elsif [false, 'false'].include?(v)
-          nil
-        else
-          "#{prefix}-#{v.to_s.dasherize}"
-        end
+        html_class = if prefix.nil?
+                       v.to_s.dasherize
+                     elsif [true, 'true'].include?(v.to_s)
+                       prefix
+                     elsif [false, 'false'].include?(v.to_s)
+                       nil
+                     else
+                       "#{prefix}-#{v.to_s.dasherize}"
+                     end
+
+        "tw-#{html_class}" unless html_class.nil?
       end
     end
 
@@ -180,13 +195,13 @@ module ViewComponentUI
       style_option :margin_x, alias: :mx, options: ViewComponentUI.config.theme.spacing, class: UTIL_PROC.call('mx')
       style_option :margin_y, alias: :my, options: ViewComponentUI.config.theme.spacing, class: UTIL_PROC.call('my')
       style_option :margin, alias: :m, options: ViewComponentUI.config.theme.spacing, class: UTIL_PROC.call('m')
-      style_option :max_height, alias: :max_h, options: ViewComponentUI.config.theme.sizes,
+      style_option :max_height, alias: :max_h, options: MAX_SIZE,
                                 class: UTIL_PROC.call('max-h')
-      style_option :max_width, alias: :max_w, options: ViewComponentUI.config.theme.sizes,
+      style_option :max_width, alias: :max_w, options: MAX_SIZE,
                                class: UTIL_PROC.call('max-w')
-      style_option :min_height, alias: :min_h, options: ViewComponentUI.config.theme.sizes,
+      style_option :min_height, alias: :min_h, options: MIN_SIZE,
                                 class: UTIL_PROC.call('min-h')
-      style_option :min_width, alias: :min_w, options: ViewComponentUI.config.theme.sizes,
+      style_option :min_width, alias: :min_w, options: MIN_SIZE,
                                class: UTIL_PROC.call('min-w')
       style_option :mix_blend_mode, options: ViewComponentUI.config.theme.mix_blend_mode,
                                     class: UTIL_PROC.call('mix-blend')
@@ -293,14 +308,55 @@ module ViewComponentUI
       style_option :z_index, alias: :z, options: ViewComponentUI.config.theme.z_index, class: UTIL_PROC.call('z')
     end
 
-    included(&DEFINE_CSS_PROPERTIES)
+    DEFINE_BREAKPOINTS = proc do
+      ViewComponentUI.config.breakpoints.each do |bp|
+        option :"_#{bp}", as: bp.to_sym, optional: true do
+          extend ClassMethods
+          instance_eval(&DEFINE_CSS_PROPERTIES)
+        end
+      end
+    end
+
+    DEFINE_PSEUDO_ELEMENTS = proc do
+      ViewComponentUI.config.pseudo_elements.each do |pc|
+        option :"_#{pc}", as: pc.to_sym, optional: true do
+          extend ClassMethods
+          instance_eval(&DEFINE_CSS_PROPERTIES)
+          instance_eval(&DEFINE_BREAKPOINTS)
+        end
+      end
+    end
+
+    DEFINE_PSEUDO_CLASSES = proc do
+      ViewComponentUI.config.pseudo_classes.each do |pc|
+        option :"_#{pc}", as: pc.to_sym, optional: true do
+          extend ClassMethods
+          instance_eval(&DEFINE_CSS_PROPERTIES)
+          instance_eval(&DEFINE_PSEUDO_ELEMENTS)
+          instance_eval(&DEFINE_BREAKPOINTS)
+        end
+      end
+    end
+
+    included do
+      instance_eval(&DEFINE_CSS_PROPERTIES)
+
+      option :_hover, as: :hover, optional: true do
+        extend ClassMethods
+        instance_eval(&DEFINE_CSS_PROPERTIES)
+      end
+    end
 
     def _class
       super.to_s.split(/\s+/).concat(build_style_classes(**style_options)).compact
     end
 
     def style_options
-      options.slice(*self.class.style_option_properties.keys).compact
+      properties = self.class.style_option_properties.keys
+      properties += ViewComponentUI.config.breakpoints.map { |v| :"_#{v}" }
+      properties += ViewComponentUI.config.pseudo_elements.map { |v| :"_#{v}" }
+      properties += ViewComponentUI.config.pseudo_classes.map { |v| :"_#{v}" }
+      options.slice(*properties).compact
     end
 
     def build_style_classes(**opts)

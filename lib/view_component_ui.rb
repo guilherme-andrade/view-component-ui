@@ -5,22 +5,21 @@ require 'view_component_ui/engine'
 require 'view_component_ui/style_options'
 require 'dry/configurable'
 
-module ViewComponentUI # rubocop:disable Metrics/ModuleLength
+module ViewComponentUI
   extend Dry::Configurable
 
   include StyleOptions
 
+  setting :output_path, default: proc { Engine.root.join('tmp/view_component_ui/compiler') }
   setting :breakpoints, default: BREAKPOINTS
   setting :pseudo_classes, default: PSEUDO_CLASSES
   setting :pseudo_elements, default: PSEUDO_ELEMENTS
   setting :content, default: proc {
                                [
-                                 Rails.root.join('app/components/**/*component.rb'),
-                                 Rails.root.join('app/components/**/*component.html.erb'),
-                                 Rails.root.join('app/views/**/*'),
-                                 Engine.root.join('app/components/**/*component.rb'),
-                                 Engine.root.join('app/components/**/*component.html.erb'),
-                                 Engine.root.join('app/views/**/*')
+                                 Rails.root.join('app/components'),
+                                 Rails.root.join('app/views'),
+                                 Engine.root.join('app/components'),
+                                 Engine.root.join('app/views')
                                ]
                              }
 
@@ -36,6 +35,7 @@ module ViewComponentUI # rubocop:disable Metrics/ModuleLength
     setting :caption_side, reader: true, default: CAPTION_SIDE
     setting :clear, reader: true, default: CLEAR
     setting :colors, reader: true, default: COLORS
+    setting :color_scheme, reader: true, default: COLOR_SCHEME
     setting :columns, reader: true, default: COLUMNS
     setting :column_span, reader: true, default: COLUMN_SPAN
     setting :column_start, reader: true, default: COLUMN_START

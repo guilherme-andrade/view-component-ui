@@ -26,7 +26,7 @@ module ViewComponentUI
     SPACING = %i[0 px 0.5 1 1.5 2 2.5 3 3.5 4 5 6 7 8 9 10 11 12 14 16 20 24 28 32 36 40 44 48 52 56 60 64 72
                  80 96 auto].freeze
     BORDER_STYLE = %i[solid dashed dotted double none].freeze
-    BORDER = %i[true false].freeze
+    BORDER = [true, false].freeze
     BORDER_WIDTH = %i[0 1 2 4 8].freeze
     BOX_DECORATION_BREAK = %i[slice clone].freeze
     BOX_SHADOW = (%i[sm md lg xl 2xl inner none] + [:true]).freeze
@@ -35,6 +35,15 @@ module ViewComponentUI
     CLEAR = %i[left right both none].freeze
     COLORS = %i[transparent current inherit black white neutral zync stone gray red amber yellow lime green blue indigo
                 violet purple pink slate emerald fuchsia rose cyan teal sky].freeze
+    COLOR_SCHEME = {
+      primary: :purple,
+      secondary: :indigo,
+      success: :emerald,
+      danger: :rose,
+      warning: :yellow,
+      info: :teal,
+      gray: :gray
+    }.with_indifferent_access.freeze
     COLUMNS = %i[auto 1 2 3 4 5 6 7 8 9 10 11 12 3xs 2xs xs sm md lg xl 2xl 3xl 4xl 5xl 6xl 7xl].freeze
     COLUMN_SPAN = %i[auto 1 2 3 4 5 6 7 8 9 10 11 12 all].freeze
     COLUMN_START = %i[auto 1 2 3 4 5 6 7 8 9 10 11 12 13].freeze
@@ -47,8 +56,8 @@ module ViewComponentUI
     EMPTY_CELLS = %i[show hide].freeze
     FLEX_BASIS = %i[auto 0].freeze
     FLEX_DIRECTION = %i[row row-reverse column column-reverse].freeze
-    FLEX_GROW = %i[0 true].freeze
-    FLEX_SHRINK = %i[0 true].freeze
+    FLEX_GROW = [0, true].freeze
+    FLEX_SHRINK = [0, true].freeze
     FLEX_WRAP = %i[wrap nowrap wrap-reverse].freeze
     FLEX = %i[1 auto initial none].freeze
     FONT_FAMILY = %i[sans serif mono].freeze
@@ -74,6 +83,9 @@ module ViewComponentUI
     LIST_STYLE_IMAGE = %i[none].freeze
     LIST_STYLE_POSITION = %i[inside outside].freeze
     LIST_STYLE_TYPE = %i[none disc decimal].freeze
+    MAX_SIZE = %i[0 xs sm md lg xl 2xl 3xl 4xl 5xl 6xl 7xl full screen min max fit prose screen-sm screen-md
+                  screen-lg screen-xl screen-2xl].freeze
+    MIN_SIZE = [0, :full, :min, :max, :fit].freeze
     MIX_BLEND_MODE = %i[normal multiply screen overlay darken lighten color-dodge color-burn hard-light soft-light
                         difference exclusion hue saturation color luminosity].freeze
     OBJECT_FIT = %i[contain cover fill none scale-down].freeze

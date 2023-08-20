@@ -14,7 +14,7 @@ module ViewComponentUI
       option :id, Types::StringOrNil, default: proc {}, reader: true
       option :lang, Types::StringOrNil, default: proc {}, reader: true
       option :spellcheck, Types::BoolOrNil, default: proc {}, reader: true
-      option :style, Types::StringOrNil, default: proc {}, reader: true
+      option :style, Types::HashOrNil, default: proc {}, reader: true
       option :tabindex, Types::StringOrNil, default: proc {}, reader: true
       option :title, Types::StringOrNil, default: proc {}, reader: true
       option :translate, Types::BoolOrNil, default: proc {}, reader: true
@@ -46,13 +46,21 @@ module ViewComponentUI
     end
 
     def options
-      self.class.dry_initializer.definitions.except(:class).keys.index_with { send(_1) }
+      self.class.dry_initializer.attributes(self).except(:class).transform_keys do |key|
+        %i[hover].include?(key.to_sym) ? :"_#{key}" : key
+      end
     end
 
     def call
       return as.new(**options) if as.is_a?(ViewComponentUI::Base)
 
       super
+    end
+
+    def style
+      super&.each_with_object('') do |(key, value), memo|
+        memo << "#{key.to_s.dasherize}: #{value};"
+      end
     end
   end
 end

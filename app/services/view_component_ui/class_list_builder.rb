@@ -44,7 +44,7 @@ module ViewComponentUI
       builder = ClassListBuilder.new(include_pseudo_classes: false, include_breakpoints: false)
 
       pseudo_classes_options(options).each_with_object([]) do |(pc, pc_options), memo|
-        classes = builder.call(**pc_options)
+        classes = builder.call(**pc_options.to_h.symbolize_keys)
 
         memo << classes.map { |klass| "#{pc[1..]}:#{klass}" }
       end
@@ -55,7 +55,7 @@ module ViewComponentUI
                                      include_breakpoints: false)
 
       pseudo_elements_options(options).each_with_object([]) do |(pe, pe_options), memo|
-        classes = builder.call(**pe_options)
+        classes = builder.call(**pe_options.to_h.symbolize_keys)
 
         memo << classes.map { |klass| "#{pe[1..]}:#{klass}" }
       end

@@ -2,26 +2,21 @@ module ViewComponentUI
   module HasColorScheme
     extend ActiveSupport::Concern
 
-    COLOR_SCHEME = {
-      primary: :purple,
-      secondary: :indigo,
-      success: :emerald,
-      danger: :rose,
-      warning: :yellow,
-      info: :teal,
-      gray: :gray
-    }.with_indifferent_access.freeze
-
     included do
       class_attribute :_color_scheme
       self._color_scheme = nil
 
-      option :color_scheme, Types::Coercible::Symbol.optional, default: proc { :primary }
+      option :color_scheme, Types::Coercible::Symbol.optional.enum(*theme_color_scheme.keys.map(&:to_sym)),
+             default: proc { theme_color_scheme.keys.first }, reader: true
     end
 
     class_methods do
       def color_scheme(&block)
         self._color_scheme = block
+      end
+
+      def theme_color_scheme
+        ViewComponentUI.config.theme.color_scheme
       end
     end
 
@@ -37,7 +32,7 @@ module ViewComponentUI
     end
 
     def color_scheme_token(weight)
-      color = COLOR_SCHEME.fetch(color_scheme.to_sym, color_scheme)
+      color = self.class.theme_color_scheme.fetch(color_scheme.to_sym, color_scheme)
 
       "#{color}-#{weight}"
     end

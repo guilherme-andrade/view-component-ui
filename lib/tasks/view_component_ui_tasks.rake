@@ -25,7 +25,7 @@ def add_breakpoints(payload, property_name, value)
 end
 
 namespace :view_component_ui do
-  task export: :environment do
+  task export_css_classes: :environment do
     style_option_properties = ViewComponentUI::StyledComponent.style_option_properties
     class_builder = ViewComponentUI::ClassListBuilder.new
 

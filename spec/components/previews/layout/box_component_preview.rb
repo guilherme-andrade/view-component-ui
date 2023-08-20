@@ -1,5 +1,4 @@
-module ViewComponentUI
-  # @logical_path root
+module Layout
   class BoxComponentPreview < ViewComponent::Preview
     # @param as text "A symbol representing the HTML tag to use for the component."
     def default(as: :div)

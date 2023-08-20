@@ -1,9 +1,11 @@
-module ViewComponentUI
-  # @logical_path root
+module Forms
   class ButtonComponentPreview < ViewComponent::Preview
-    def default
-      render ViewComponentUI::ButtonComponent.new do
-        'This is a button.'
+    # @param variant select {{ ViewComponentUI::ButtonComponent.variants.map(&:name) }} "The variant of the button"
+    # @param color_scheme select {{ ViewComponentUI.config.theme.color_scheme.keys }} "The color scheme of the button"
+    # @param size select {{ ViewComponentUI::ButtonComponent.sizes.map(&:name) }} "The size of the button"
+    def default(size: :md, variant: :solid, color_scheme: :primary)
+      render ViewComponentUI::ButtonComponent.new(size:, variant:, color_scheme:) do
+        "This is a #{size} #{variant} #{color_scheme} button."
       end
     end
 
