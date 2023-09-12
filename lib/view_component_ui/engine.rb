@@ -26,5 +26,9 @@ module ViewComponentUI
     config.autoload_paths << root.join('app/components/navigation')
     config.autoload_paths << root.join('app/components/overlay')
     config.autoload_paths << root.join('app/components/other')
+
+    config.after_initialize do
+      require 'view_component_ui/style_properties/schemas'
+    end
   end
 end

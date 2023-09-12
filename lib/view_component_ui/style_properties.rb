@@ -1,5 +1,5 @@
 module ViewComponentUI
-  module StyleOptions # rubocop:disable Metrics/ModuleLength
+  module StyleProperties # rubocop:disable Metrics/ModuleLength
     COLOR_WEIGHTS = ([nil] + %i[50 100 200 300 400 500 600 700 800 900]).freeze
     BREAKPOINTS = %i[sm md lg xl 2xl].freeze
     PSEUDO_CLASSES = %i[hover focus active visited disabled first-child last-child first-of-type last-of-type

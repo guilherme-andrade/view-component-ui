@@ -2,13 +2,13 @@
 
 require 'view_component_ui/version'
 require 'view_component_ui/engine'
-require 'view_component_ui/style_options'
+require 'view_component_ui/style_properties'
 require 'dry/configurable'
 
 module ViewComponentUI
   extend Dry::Configurable
 
-  include StyleOptions
+  include StyleProperties
 
   setting :output_path, default: proc { Engine.root.join('tmp/view_component_ui/compiler') }
   setting :breakpoints, default: BREAKPOINTS

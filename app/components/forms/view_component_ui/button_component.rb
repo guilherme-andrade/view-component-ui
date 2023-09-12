@@ -5,7 +5,7 @@ module ViewComponentUI
     include HasColorScheme
 
     defaults variant: :solid, size: :md, color_scheme: :primary, tag: :button, type: :button,
-             border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { xs: { bg: 'white' } }
+             border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { bg: 'white' }
 
     variant :solid,
             bg: proc { color_scheme_token(500) },

@@ -16,3 +16,4 @@ ViewComponentUI.configure do |config|
     config.spacing = %i[0 px 2 4 6 8 10 12 14 16 20 24 28 32 36 40 44 48 52 56 60 64 72 80 96].freeze
   end
 end
+

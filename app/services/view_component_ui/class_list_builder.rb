@@ -7,7 +7,6 @@ module ViewComponentUI
     option :include_pseudo_elements, default: proc { true }, reader: true
 
     delegate :pseudo_classes, :pseudo_elements, :breakpoints, to: :config, prefix: :config
-    delegate :style_option_properties, to: StyledComponent, prefix: :config
 
     def call(**options)
       classes = []
@@ -24,7 +23,8 @@ module ViewComponentUI
 
     def build_style_option_classes(options)
       style_option_options(options).each_with_object([]) do |(style_option, value), memo|
-        classes = config_style_option_properties[style_option][:class].call(value)
+        token = find_property_config(style_option)[:token]
+        classes = build_token(token, value)
 
         memo << classes
       end
@@ -49,6 +49,8 @@ module ViewComponentUI
         memo << classes.map { |klass| "#{pc[1..]}:#{klass}" }
       end
     end
+
+
 
     def build_pseudo_elements_classes(options)
       builder = ClassListBuilder.new(include_pseudo_classes: false, include_pseudo_elements: false,
@@ -76,15 +78,47 @@ module ViewComponentUI
     end
 
     def style_option_options(options)
-      all_keys = config_style_option_properties.keys.map do
-        [_1, config_style_option_properties[_1][:alias]].compact
+      all_keys = config_style_option_properties.keys.map do |option_key|
+        [option_key, config_style_option_properties[option_key][:alias]].compact
       end.flatten
 
       options.slice(*all_keys)
     end
 
+    def build_token(token, value)
+      html_class = html_class(token, value)
+      "tw-#{html_class}" unless html_class.nil?
+    end
+
+    def html_class(token, value)
+      case [token, value]
+      in [String, TrueClass | 'true']
+        token
+      in [String, String]
+        "#{token}-#{value.to_s.dasherize}"
+      in [String, Integer]
+        "#{token}-#{value}"
+      in [Proc, _]
+        token.call(value)
+      in [NilClass, _]
+        value.to_s.dasherize
+      else
+        nil
+      end
+    end
+
     def config
       ViewComponentUI.config
+    end
+
+    def config_style_option_properties
+      StyleProperties::Schemas::STYLE_PROPERTY_MAP
+    end
+
+    def find_property_config(name_or_alias)
+      config_style_option_properties.find do |key, value|
+        key == name_or_alias || value[:alias] == name_or_alias
+      end.last
     end
   end
 end
