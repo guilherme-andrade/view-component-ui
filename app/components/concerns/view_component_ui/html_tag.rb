@@ -5,7 +5,7 @@ module ViewComponentUI
     included do
       option :as, Types::Tag | Types.Instance(ViewComponentUI::Base), default: proc { :div }, reader: true
       option :accesskey, Types::StringOrNil, default: proc {}, reader: true
-      option :class, Types::StringOrNil, default: proc {}, as: :_class, reader: true
+      option :class, Types::StringOrNil, default: proc {}, as: :class_list, reader: true
       option :contenteditable, Types::BoolOrNil, default: proc {}, reader: true
       option :data, Types::HashOrNil, default: proc { {} }, reader: true
       option :dir, Types::StringOrNil, default: proc {}, reader: true
@@ -41,7 +41,7 @@ module ViewComponentUI
     ].freeze
 
     def html_attributes
-      class_values = _class.flatten.uniq.compact.join(' ')
+      class_values = class_list.flatten.uniq.compact.join(' ')
 
       HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: class_values).compact
     end

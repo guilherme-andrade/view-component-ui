@@ -24,7 +24,7 @@ module ViewComponentUI
       self.class._color_scheme
     end
 
-    def _class
+    def class_list
       return super unless color_scheme_config
 
       theme_class = instance_eval(&color_scheme_config)

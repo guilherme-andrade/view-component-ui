@@ -37,7 +37,7 @@ module ViewComponentUI
 
     attr_reader :props, :default_props, :style_props
 
-    def _class
+    def class_list
       super.to_s.split(/\s+/).concat(build_style_classes(**style_options)).compact
     end
 
@@ -46,8 +46,17 @@ module ViewComponentUI
     end
 
     def build_style_classes(**opts)
-      class_builder = ClassListBuilder.new
-      class_builder.call(**opts)
+      compiled_options = compile_proc_options(**opts)
+      class_builder.call(**compiled_options)
+    end
+
+    def compile_proc_options(**opts)
+      opts.deep_transform_values { _1.respond_to?(:call) ? instance_eval(&_1) : _1 }
+    end
+
+
+    def class_builder
+      @class_builder ||= Compiler::ClassListBuilder.new
     end
   end
 end

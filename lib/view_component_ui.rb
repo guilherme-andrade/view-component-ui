@@ -4,6 +4,7 @@ require 'view_component_ui/version'
 require 'view_component_ui/engine'
 require 'view_component_ui/style_properties'
 require 'dry/configurable'
+require 'deep_merge/rails_compat'
 
 module ViewComponentUI
   extend Dry::Configurable
@@ -22,6 +23,10 @@ module ViewComponentUI
                                  Engine.root.join('app/views')
                                ]
                              }
+
+  setting :compiler, reader: true do
+    setting :on_compile, default: proc {}
+  end
 
   setting :theme do # rubocop:disable Metrics/BlockLength
     setting :border_radiuses, reader: true, default: BORDER_RADIUSES

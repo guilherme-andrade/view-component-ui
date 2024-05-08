@@ -1,34 +1,35 @@
+require 'active_support/core_ext/object/blank'
+
+require 'view_component_ui/compiler/class_list_builder'
+
 module ViewComponentUI
   module Compiler
     class HashArgsExtractor
       def call(ast:)
-        classes = []
-        classes += extract_hash_from_node(ast)
-        classes
+        extract_hash_arguments_from_ast_nodes(ast)
       end
 
-      def extract_hash_from_node(node)
-        classes = []
-        return unless node
+      private
+
+      def extract_hash_arguments_from_ast_nodes(node)
+        hash_args = []
+        return unless node.is_a?(Parser::AST::Node)
 
         if node.type == :send
-          hashes = extract_hashes(node).flatten(10)
-          classes += hashes.map { |hash| extract_classes(hash) }
+          hash_args += extract_hashes(node).flatten(10)
         end
 
         node.children.each do |child|
-          classes += extract_hash_from_node(child) if child.is_a?(Parser::AST::Node)
+          next unless child.is_a?(Parser::AST::Node)
+
+          hash_args += extract_hash_arguments_from_ast_nodes(child)
         end
 
-        classes.flatten
+        hash_args.flatten.compact
       end
 
       def extract_hashes(node)
         scan_for_hash_children(node).each_with_object([]) { |hash_node, acc| extract_value(hash_node, acc) }.compact
-      end
-
-      def extract_classes(hash)
-        class_builder.call(**hash.deep_symbolize_keys.compact) if hash.present?
       end
 
       def scan_for_hash_children(node)
@@ -51,9 +52,9 @@ module ViewComponentUI
         when :hash
           hashes = []
           extract_value(value_node, hashes)
-          hashes.flatten.map { |h| { key => h } }
+          hashes.flatten.map { |h| { key.to_sym => h } }
         when :int, :str, :sym
-          { key => node_text(value_node) }
+          { key.to_sym => node_text(value_node) }
         else
           extract_color_scheme_calls(key_node, value_node)
         end
@@ -68,7 +69,7 @@ module ViewComponentUI
 
         weight = match[1].to_i
         ViewComponentUI.config.theme.color_scheme.values.map do |color|
-          { source_code(key_node) => "#{color}-#{weight}" }
+          { source_code(key_node).to_sym => "#{color}-#{weight}" }
         end
       end
 
@@ -78,12 +79,6 @@ module ViewComponentUI
 
       def source_code(node)
         node.location.expression.source
-      end
-
-      def infer_proc_result(value_node); end
-
-      def class_builder
-        ViewComponentUI::ClassListBuilder.new
       end
     end
   end

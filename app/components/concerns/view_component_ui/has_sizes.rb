@@ -23,7 +23,7 @@ module ViewComponentUI
       size_config.options(self).slice(*HTMLTag::HTML_ATTRIBUTES).merge(super)
     end
 
-    def _class
+    def class_list
       value = size_config.options(self)
       style_classes = build_style_classes(**value)
       classes = value[:class].then do |cn|

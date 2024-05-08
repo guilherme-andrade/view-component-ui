@@ -8,15 +8,15 @@ module ViewComponentUI
              border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { bg: 'white' }
 
     variant :solid,
-            color: 'white',
             bg: proc { color_scheme_token(500) },
+            color: 'white',
             _hover: { bg: proc { color_scheme_token(600) } }
 
     variant :outline,
-            border: true,
+            border: 'true',
             border_color: proc { color_scheme_token(500) },
             color: proc { color_scheme_token(500) },
-            _hover: { bg: proc { color_scheme_token(500) }, color: 'white' }
+            _hover: { bg: proc { color_scheme_token(500) }, text: 'white' }
 
     variant :link,
             color: proc { color_scheme_token(500) },

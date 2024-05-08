@@ -4,7 +4,7 @@ module ViewComponentUI
   module Compiler
     class Output
       def add_entry(file_path:, classes:)
-        return if classes.empty?
+        return if classes.blank?
 
         path = compiled_file_path(file_path:)
         create_folder(file_path: path)

@@ -31,7 +31,7 @@ module ViewComponentUI
         border_right_radius: { values: ViewComponentUI.config.theme.border_radius, token: 'rounded-r' },
         border_collapse: { values: BORDER_COLLAPSE, token: 'border' },
         border_color: { values: COLOR_WITH_WEIGHTS, token: 'border' },
-        border_radius: { values: ViewComponentUI.config.theme.border_radius, token: 'rounded' },
+        border_radius: { values: ViewComponentUI.config.theme.border_radius, token: 'rounded', alias: :rounded },
         border_spacing: { values: ViewComponentUI.config.theme.spacing, token: 'border-spacing' },
         border_spacing_x: { values: ViewComponentUI.config.theme.spacing, token: 'border-spacing-x' },
         border_spacing_y: { values: ViewComponentUI.config.theme.spacing, token: 'border-spacing-y' },
@@ -40,7 +40,7 @@ module ViewComponentUI
         border_width: { values: ViewComponentUI.config.theme.border_width, token: 'border' },
         bottom: { values: ViewComponentUI.config.theme.sizes, token: 'bottom' },
         box_decoration_break: { values: BOX_DECORATION_BREAK, token: 'box-decoration-break' },
-        box_shadow: { values: ViewComponentUI.config.theme.box_shadow, token: 'shadow' },
+        box_shadow: { values: ViewComponentUI.config.theme.box_shadow, token: 'shadow', alias: :shadow },
         box_sizing: { values: ViewComponentUI.config.theme.box_sizing, token: 'box' },
         caption_side: { values: ViewComponentUI.config.theme.caption_side, token: 'caption' },
         clear: { values: ViewComponentUI.config.theme.clear, token: 'clear' },
@@ -204,7 +204,7 @@ module ViewComponentUI
         end
       end
 
-      StylePropertySchema = PropertySchema.merge(BreakpointSchema).merge(PseudoElementSchema).merge(PseudoClassSchema)
+      StylePropertySchema = [PropertySchema, BreakpointSchema, PseudoElementSchema, PseudoClassSchema].reduce(&:merge)
     end
   end
 end

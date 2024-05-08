@@ -23,15 +23,8 @@ module ViewComponentUI
       size_config.options(self).slice(*HTMLTag::HTML_ATTRIBUTES).merge(super)
     end
 
-    def _class
-      value = variant_config.options(self)
-      style_classes = build_style_classes(**value)
-      classes = value[:class].then do |cn|
-        cn.is_a?(Proc) ? instance_eval(&cn) : cn
-      end
-      return super if value.blank? && style_classes.blank?
-
-      [super, classes, style_classes].flatten.compact
+    def style_options
+      variant_config.options(self).deeper_merge(super)
     end
 
     class Variant
