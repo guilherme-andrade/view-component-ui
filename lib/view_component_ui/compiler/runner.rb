@@ -12,7 +12,7 @@ module ViewComponentUI
           listener = Listen.to(File.dirname(location.to_s), only: /\.(rb|erb)$/) do |modified, added, removed|
             (modified + added + removed).each do |file_path|
               classes = file_classes_extractor.call(file_path:)
-              next unless classes
+              next unless classes.present?
 
               output.add_entry(file_path:, classes:)
             end
@@ -22,7 +22,7 @@ module ViewComponentUI
 
           Dir.glob("#{location}/**/*").each do |file_path|
             classes = file_classes_extractor.call(file_path:)
-            next unless classes
+            next unless classes.present?
 
             output.add_entry(file_path:, classes:)
           end

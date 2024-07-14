@@ -9,7 +9,7 @@ module ViewComponentUI
         path = compiled_file_path(file_path:)
         create_folder(file_path: path)
 
-        path = path.delete_suffix(File.extname(path))
+        path = path += '.classes'
         File.open(path, 'wb') do |file|
           file << classes.join("\n")
         end

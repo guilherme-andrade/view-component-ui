@@ -22,6 +22,7 @@ gem 'listen'
 gem 'deep_merge'
 
 group :development, :test do
+  gem 'foreman'
   gem 'pry', '>= 0.12.2'
   gem 'rspec-rails', '>= 6.0.0'
   gem 'rspec-snapshot'

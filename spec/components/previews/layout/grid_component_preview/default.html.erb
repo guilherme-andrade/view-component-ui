@@ -1,0 +1,13 @@
+<%= render ViewComponentUI::GridComponent.new do |grid| %>
+  <% grid.with_col(span: 4) do |col| %>
+    This is a column.
+  <% end %>
+
+  <% grid.with_col(span: 2) do |col| %>
+    This is a column.
+  <% end %>
+
+  <% grid.with_col(span: 4) do |col| %>
+    This is a column.
+  <% end %>
+<% end %>

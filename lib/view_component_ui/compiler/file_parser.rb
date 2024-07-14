@@ -34,7 +34,7 @@ module ViewComponentUI
 
       def extract_ruby_from_erb(erb:)
         # Use a regex to extract ruby code from ERB
-        erb.scan(/<%([\s\S]*?)%>/m).flatten
+        erb.scan(/<%=?([\s\S]*?)%>/m).flatten
       end
     end
   end

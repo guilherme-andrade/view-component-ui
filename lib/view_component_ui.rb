@@ -25,7 +25,7 @@ module ViewComponentUI
                              }
 
   setting :compiler, reader: true do
-    setting :on_compile, default: proc {}
+    setting :on_compile, default: proc { `yarn build` }
   end
 
   setting :theme do # rubocop:disable Metrics/BlockLength

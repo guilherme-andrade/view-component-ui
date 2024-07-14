@@ -49,7 +49,7 @@ module ViewComponentUI
         column_span: { values: ViewComponentUI.config.theme.column_span, token: 'col-span', alias: :col_span },
         column_start: { values: ViewComponentUI.config.theme.column_start, token: 'col-start', alias: :col_start },
         column_end: { values: ViewComponentUI.config.theme.column_end, token: 'col-end', alias: :col_end },
-        columns: { values: ViewComponentUI.config.theme.columns, token: 'col' },
+        columns: { values: ViewComponentUI.config.theme.columns, token: 'columns' },
         _content: { values: ViewComponentUI.config.theme.content, token: 'content' },
         cursor: { values: ViewComponentUI.config.theme.cursor, token: 'cursor' },
         display: { values: DISPLAY, token: nil },

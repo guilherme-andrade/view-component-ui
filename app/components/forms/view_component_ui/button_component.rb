@@ -30,11 +30,5 @@ module ViewComponentUI
     size :sm, font_size: :sm, py: '1', px: '2'
     size :md, font_size: :base, py: '2', px: '4'
     size :lg, font_size: :lg, py: '3', px: '6'
-
-    def call
-      render BoxComponent.new(**html_attributes) do
-        content
-      end
-    end
   end
 end

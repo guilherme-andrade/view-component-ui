@@ -1,0 +1,7 @@
+<%= render ViewComponentUI::BoxComponent.new(bg: 'gray-100', py: 48) do %>
+  <%= render ViewComponentUI::ContainerComponent.new(size: :md) do %>
+    <%= render ViewComponentUI::PaperComponent.new do %>
+      This is a paper.
+    <% end %>
+  <% end %>
+<% end %>

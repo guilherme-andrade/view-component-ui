@@ -1,7 +1,7 @@
 module ViewComponentUI
   class BoxComponent < StyledComponent
     def call
-      content_tag(as, **html_attributes) do
+      as_tag do
         content
       end
     end

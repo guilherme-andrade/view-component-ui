@@ -31,7 +31,7 @@ module ViewComponentUI
     BORDER = [true, false].freeze
     BORDER_WIDTH = %i[0 1 2 4 8].freeze
     BOX_DECORATION_BREAK = %i[slice clone].freeze
-    BOX_SHADOW = (%i[sm md lg xl 2xl inner none] + [:true]).freeze
+    BOX_SHADOW = (%i[sm md lg xl 2xl inner none] + [true]).freeze
     BOX_SIZING = %i[border content].freeze
     CAPTION_SIDE = %i[top bottom].freeze
     CLEAR = %i[left right both none].freeze

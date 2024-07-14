@@ -43,7 +43,7 @@ module ViewComponentUI
     def html_attributes
       class_values = class_list.flatten.uniq.compact.join(' ')
 
-      HTML_ATTRIBUTES.index_with { options[_1] }.merge(class: class_values).compact
+      HTML_ATTRIBUTES.index_with { send(_1) }.merge(class: class_values).compact
     end
 
     def options

@@ -7,4 +7,6 @@ load 'rails/tasks/engine.rake'
 
 load 'rails/tasks/statistics.rake'
 
+load 'lib/tasks/view_component_ui_tasks.rake'
+
 require 'bundler/gem_tasks'

@@ -1,0 +1,8 @@
+<%= render WrapperComponent.new do %>
+  <%= render BackDropComponent.new %>
+  <%= render DialogComponent.new do %>
+    <%= head %>
+    <%= body %>
+    <%= footer %>
+  <% end %>
+<% end %>

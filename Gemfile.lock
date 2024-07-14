@@ -120,6 +120,7 @@ GEM
       zeitwerk (~> 2.6)
     erubi (1.12.0)
     ffi (1.15.5)
+    foreman (0.88.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     htmlbeautifier (1.4.2)
@@ -301,6 +302,7 @@ PLATFORMS
 
 DEPENDENCIES
   deep_merge
+  foreman
   listen
   lookbook
   parser

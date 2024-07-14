@@ -1,0 +1,17 @@
+<%= render ViewComponentUI::RowComponent.new(columns: '3xs') do |row| %>
+  <%= row.with_col do %>
+    This is a column.
+  <% end %>
+
+  <%= row.with_col do %>
+    This is a column.
+  <% end %>
+
+  <%= row.with_col do %>
+    This is a column.
+  <% end %>
+
+  <%= row.with_col do %>
+    This is a column.
+  <% end %>
+<% end %>
