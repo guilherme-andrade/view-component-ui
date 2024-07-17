@@ -1,0 +1,13 @@
+<%= javascript_tag on_active_tab_change_function %>
+
+<%= render_self do %>
+  <% tabs.each do |tab| %>
+    <%= tab %>
+  <% end %>
+  <%= render ViewComponentUI::BoxComponent.new do %>
+    <% tab_panes.each do |tab_pane| %>
+      <%= tab_pane %>
+    <% end %>
+  <% end %>
+<% end %>
+

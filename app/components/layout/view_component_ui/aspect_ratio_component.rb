@@ -1,8 +1,8 @@
 module ViewComponentUI
   class AspectRatioComponent < BoxComponent
-    defaults position: :relative, max_width: :md
+    default_props position: :relative, max_width: :md
 
-    renders_one :html, lambda { |**all_options|
+    renders_one :html, lambda { |**props|
       BoxComponent.new(
         overflow: :hidden,
         position: :absolute,
@@ -12,15 +12,18 @@ module ViewComponentUI
         left: 0,
         width: 'full',
         height: 'full',
-        **all_options
+        **props
       )
     }
 
     def call
-      render BoxComponent.new(as:, **html_attributes) do
-        space_fill = render BoxComponent.new(display: :block, height: 0, style: { padding_top: '100%' })
+      render_self do
         safe_join([space_fill, html])
       end
+    end
+
+    def space_fill
+      render BoxComponent.new(display: :block, height: 0, style: { padding_top: '100%' })
     end
   end
 end

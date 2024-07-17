@@ -6,7 +6,7 @@ module ViewComponentUI
       class_attribute :sizes
       self.sizes = []
 
-      option :size, Types::Coercible::Symbol.optional, default: proc { :md }
+      prop :size, Types::Coercible::Symbol.optional, default: proc { :md }
     end
 
     class_methods do
@@ -20,7 +20,7 @@ module ViewComponentUI
     end
 
     def html_attributes
-      size_config.options(self).slice(*HTMLTag::HTML_ATTRIBUTES).merge(super)
+      size_config.options(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super)
     end
 
     def class_list

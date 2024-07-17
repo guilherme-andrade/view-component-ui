@@ -1,5 +1,5 @@
 module ViewComponentUI
   class FlexComponent < BoxComponent
-    defaults display: :flex
+    default_props display: :flex
   end
 end

@@ -1,8 +1,14 @@
-<%= render WrapperComponent.new do %>
-  <%= render BackDropComponent.new %>
-  <%= render DialogComponent.new do %>
-    <%= head %>
-    <%= body %>
-    <%= footer %>
+<%= render ViewComponentUI::BoxComponent.new(x_data: "{ open: false }") do %>
+  <%= trigger %>
+
+  <%= render ViewComponentUI::BoxComponent.new(as: :template, x_teleport: "body") do%>
+    <%= render WrapperComponent.new(**props) do %>
+      <%= render BackDropComponent.new %>
+      <%= render DialogComponent.new do %>
+        <%= head %>
+        <%= body %>
+        <%= footer %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

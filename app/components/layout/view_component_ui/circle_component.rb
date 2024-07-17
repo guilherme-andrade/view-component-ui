@@ -1,5 +1,5 @@
 module ViewComponentUI
   class CircleComponent < CenterComponent
-    defaults border_radius: :circle
+    default_props border_radius: :circle
   end
 end

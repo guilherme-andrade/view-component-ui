@@ -55,6 +55,10 @@ module ViewComponentUI
           hashes.flatten.map { |h| { key.to_sym => h } }
         when :int, :str, :sym
           { key.to_sym => node_text(value_node) }
+        when :true
+          { key.to_sym => true }
+        when :false
+          { key.to_sym => false }
         else
           extract_color_scheme_calls(key_node, value_node)
         end

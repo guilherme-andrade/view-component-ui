@@ -2,7 +2,7 @@ module ViewComponentUI
   class ContainerComponent < BoxComponent
     include HasSizes
 
-    defaults tag: :div, width: :full, mx: :auto, size: :lg
+    default_props tag: :div, width: :full, mx: :auto, size: :lg
 
     size :sm, max_w: 48
     size :md, max_w: 64

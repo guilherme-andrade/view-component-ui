@@ -1,13 +1,7 @@
 module ViewComponentUI
   class GridComponent < BoxComponent
-    defaults tag: :div, display: :grid
+    default_props tag: :div, display: :grid, grid_cols: 12, gap: 4
 
     renders_many :cols, ViewComponentUI::ColComponent
-
-    def call
-      as_tag do
-        cols
-      end
-    end
   end
 end

@@ -1,0 +1,11 @@
+{
+  "assets/main.ts": {
+    "file": "view-component-ui.umd.cjs",
+    "isEntry": true,
+    "src": "assets/main.ts"
+  },
+  "style.css": {
+    "file": "view-component-ui.css",
+    "src": "style.css"
+  }
+}

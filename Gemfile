@@ -13,13 +13,13 @@ gem 'sprockets-rails'
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
 
-gem 'lookbook'
-
-gem 'webrick', '~> 1.7'
-gem 'puma', '~> 6.3'
-gem 'parser'
-gem 'listen'
 gem 'deep_merge'
+gem 'faker'
+gem 'listen'
+gem 'lookbook'
+gem 'parser'
+gem 'puma', '~> 6.3'
+gem 'webrick', '~> 1.7'
 
 group :development, :test do
   gem 'foreman'

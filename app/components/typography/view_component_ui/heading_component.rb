@@ -9,9 +9,9 @@ module ViewComponentUI
       6 => 'base' # tw-text-base
     }.freeze
 
-    defaults level: 2, font_weight: 'bold'
+    default_props level: 2, font_weight: 'bold'
 
-    option :level, default: proc { 2 }
+    prop :level, default: proc { 2 }
 
     def font_size
       initial_props[:font_size] || FONT_SIZES[level]

@@ -2,7 +2,10 @@
 
 require 'view_component_ui/version'
 require 'view_component_ui/engine'
+require 'view_component_ui/types'
 require 'view_component_ui/style_properties'
+require 'view_component_ui/style_attribute'
+require 'view_component_ui/javascript_attribute'
 require 'dry/configurable'
 require 'deep_merge/rails_compat'
 
@@ -24,8 +27,9 @@ module ViewComponentUI
                                ]
                              }
 
-  setting :compiler, reader: true do
-    setting :on_compile, default: proc { `yarn build` }
+  setting :package_json_path, default: proc { Rails.root.join('package.json') }
+  setting :vite do
+    setting :config_file_path, default: proc { Rails.root.join('vite.config.js') }
   end
 
   setting :theme do # rubocop:disable Metrics/BlockLength

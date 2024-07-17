@@ -7,4 +7,9 @@ namespace :view_component_ui do
     loop do
     end
   end
+
+  task install: :environment do
+    require 'view_component_ui/installer'
+    ViewComponentUI::Installer.new.call
+  end
 end

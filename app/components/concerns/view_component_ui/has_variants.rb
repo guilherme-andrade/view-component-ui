@@ -6,7 +6,7 @@ module ViewComponentUI
       class_attribute :variants
       self.variants = []
 
-      option :variant, Types::Coercible::Symbol.optional, default: proc { :default }
+      prop :variant, Types::Coercible::Symbol.optional, default: proc { :default }
     end
 
     class_methods do
@@ -20,7 +20,7 @@ module ViewComponentUI
     end
 
     def html_attributes
-      size_config.options(self).slice(*HTMLTag::HTML_ATTRIBUTES).merge(super)
+      size_config.options(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super)
     end
 
     def style_options

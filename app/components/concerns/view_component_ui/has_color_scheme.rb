@@ -6,7 +6,7 @@ module ViewComponentUI
       class_attribute :_color_scheme
       self._color_scheme = nil
 
-      option :color_scheme, Types::Coercible::Symbol.optional.enum(*theme_color_scheme.keys.map(&:to_sym)),
+      prop :color_scheme, Types::Coercible::Symbol.optional.enum(*theme_color_scheme.keys.map(&:to_sym)),
              default: proc { theme_color_scheme.keys.first }, reader: true
     end
 

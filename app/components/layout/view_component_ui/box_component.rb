@@ -1,7 +1,7 @@
 module ViewComponentUI
   class BoxComponent < StyledComponent
     def call
-      as_tag do
+      render_self do
         content
       end
     end

@@ -1,0 +1,11 @@
+<%= render ViewComponentUI::BoxComponent.new(rounded: true, border: true, px: 3, py: 2) do %>
+  First
+<% end %>
+<%= render ViewComponentUI::SpaceComponent.new %>
+<%= render ViewComponentUI::BoxComponent.new(rounded: true, border: true, px: 3, py: 2) do %>
+  Second
+<% end %>
+<%= render ViewComponentUI::SpaceComponent.new %>
+<%= render ViewComponentUI::BoxComponent.new(rounded: true, border: true, px: 3, py: 2) do %>
+  Last
+<% end %>

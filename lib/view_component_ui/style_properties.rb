@@ -4,7 +4,7 @@ module ViewComponentUI
   module StyleProperties # rubocop:disable Metrics/ModuleLength
     COLOR_WEIGHTS = ([nil] + %i[50 100 200 300 400 500 600 700 800 900]).freeze
     BREAKPOINTS = %i[sm md lg xl 2xl].freeze
-    PSEUDO_CLASSES = %i[hover focus active visited disabled first-child last-child first-of-type last-of-type
+    PSEUDO_CLASSES = %i[hover focus active visited disabled active first last first_of_type last_of_type
                         odd even].freeze
     PSEUDO_ELEMENTS = %i[before after file first-letter first-line selection backdrop marker].freeze
 
@@ -24,7 +24,7 @@ module ViewComponentUI
     BORDER_RADIUSES = %i[none sm md lg full].freeze
     BACKGROUND_SIZE = %i[auto cover contain].freeze
     BORDER_COLLAPSE = %i[collapse separate].freeze
-    BORDER_RADIUS = %i[none sm true md lg xl 2xl 3xl full].freeze
+    BORDER_RADIUS = %i[none sm true md lg xl 2xl 3xl full] + [true].freeze
     SPACING = %i[0 px 0.5 1 1.5 2 2.5 3 3.5 4 5 6 7 8 9 10 11 12 14 16 20 24 28 32 36 40 44 48 52 56 60 64 72
                  80 96 auto].freeze
     BORDER_STYLE = %i[solid dashed dotted double none].freeze

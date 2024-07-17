@@ -1,13 +1,19 @@
-<%= render ViewComponentUI::GridComponent.new do |grid| %>
-  <% grid.with_col(span: 4) do |col| %>
+<%= render ViewComponentUI::GridComponent.new(p: 4) do |grid| %>
+  <%= grid.with_col(column_span: 4, bg: 'rose-500', color: 'white', p: 4, rounded: :md) do %>
     This is a column.
   <% end %>
 
-  <% grid.with_col(span: 2) do |col| %>
+  <%= grid.with_col(column_span: 2, bg: 'blue-500', color: 'white', p: 4, rounded: :md) do %>
     This is a column.
   <% end %>
 
-  <% grid.with_col(span: 4) do |col| %>
+  <%= grid.with_col(column_span: 3, bg: 'indigo-500', color: 'white', p: 4, rounded: :md) do %>
+    This is a column.
+  <% end %>
+
+  <%= grid.with_col(column_span: 3, bg: 'emerald-300', color: 'black', p: 4, rounded: :md) do %>
     This is a column.
   <% end %>
 <% end %>
+
+

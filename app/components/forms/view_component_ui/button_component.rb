@@ -4,7 +4,7 @@ module ViewComponentUI
     include HasVariants
     include HasColorScheme
 
-    defaults variant: :solid, size: :md, color_scheme: :primary, as: :button, type: :button,
+    default_props variant: :solid, size: :md, color_scheme: :primary, as: :button, type: :button,
              border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { bg: 'white' }
 
     variant :solid,

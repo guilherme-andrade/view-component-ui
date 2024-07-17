@@ -13,10 +13,6 @@ module ViewComponentUI
       [root.join('spec/components/previews').to_s]
     end
 
-    initializer 'view_component_ui' do |app|
-      app.config.assets.paths << Engine.root.join('assets/compiled')
-    end
-
     %w[layout forms feedback typography media_and_icons data_display navigation overlay other modal].each do
       config.autoload_paths << root.join("app/components/#{_1}")
     end

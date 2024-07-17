@@ -1,0 +1,13 @@
+<%= render ViewComponentUI::BoxComponent.new(p: 4) do  %>
+  <%= render ViewComponentUI::AccordionComponent.new do |accordion| %>
+    <% accordion.with_item(title: "First") do %>
+      <%= ::Faker::Lorem.paragraph %>
+    <% end %>
+    <% accordion.with_item(title: "Second") do %>
+      <%= ::Faker::Lorem.paragraph %>
+    <% end %>
+    <% accordion.with_item(title: "Last") do %>
+      <%= ::Faker::Lorem.paragraph %>
+    <% end %>
+  <% end %>
+<% end %>

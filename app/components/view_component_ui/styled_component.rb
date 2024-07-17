@@ -1,5 +1,5 @@
 module ViewComponentUI
   class StyledComponent < Base
-    include CSSOptions
+    include HasStyleProps
   end
 end

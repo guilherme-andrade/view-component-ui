@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'deep_merge', '>= 1.0.1'
   spec.add_dependency 'dry-configurable', '>= 0.12.0'
   spec.add_dependency 'dry-initializer', '>= 3.0.0'
+  spec.add_dependency 'dry-struct', '>= 1.0.0'
   spec.add_dependency 'dry-schema', '>= 1.13.0'
   spec.add_dependency 'dry-types', '>= 1.0.0'
   spec.add_dependency 'rails', '>= 6.0.0'
