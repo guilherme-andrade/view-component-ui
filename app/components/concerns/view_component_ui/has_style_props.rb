@@ -6,19 +6,21 @@ module ViewComponentUI
 
     include ViewComponentUI::StyleProperties::Schemas
 
-    attr_reader :style_props
-
     def class_list
-      super.to_s.split(/\s+/).concat(build_style_classes(**style_props)).compact
+      super.to_s.split(/\s+/).concat(class_names(**style_props)).compact
     end
 
     def style_props
       StylePropertySchema.call(props).to_h
     end
 
-    def build_style_classes(**opts)
+    def class_names(**opts)
       compiled_options = compile_proc_options(**opts)
       class_builder.call(**compiled_options)
+    end
+
+    def string_class_names(**opts)
+      class_names(**opts).join(' ')
     end
 
     def compile_proc_options(**opts)

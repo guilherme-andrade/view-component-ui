@@ -21,5 +21,10 @@ module ViewComponentUI
     HashOrNil = Strict::Hash.optional
 
     Tag = Coercible::Symbol.default(:div).enum(*HTML_TAGS)
+
+    Component = Instance(ViewComponent::Base)
+
+    PropValue = Types::Interface(:call) | Types::Hash | Types::String | Types::Symbol | Types::Integer |
+                Types::Bool | Types::Nil
   end
 end

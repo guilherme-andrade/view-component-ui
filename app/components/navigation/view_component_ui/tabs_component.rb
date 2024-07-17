@@ -10,7 +10,7 @@ module ViewComponentUI
       id: {
         tabs: { x_data: proc { "{ active: '#{tab_panes.first.id}' } " } },
         tab: { on_click: "active = $el.dataset.id" },
-        tab_pane: { x_show: "active == $el.id" }
+        tab_pane: { x_show: "active === $el.id" }
       }
     }.with_indifferent_access.freeze
 
@@ -21,24 +21,10 @@ module ViewComponentUI
 
     default_props x_data: proc { POINTER_METHOD_PROPS[pointer_method][:tabs][:x_data] }
 
-    def on_active_tab_change_function
-      <<~ALPINEJS
-        function onActiveChange(active, element) {
-          if (active === element.dataset.id) {
-            element.classList.remove('tw-text-gray-600', 'tw-bg-transparent', 'hover:tw-bg-gray-50')
-            element.classList.add('tw-text-blue-900', 'tw-bg-blue-50', 'hover:tw-bg-blue-50')
-          } else {
-            element.classList.remove('tw-text-blue-900', 'tw-bg-blue-50', 'hover:tw-bg-blue-50')
-            element.classList.add('tw-text-gray-600', 'tw-bg-transparent', 'hover:tw-bg-gray-50')
-          }
-        }
-      ALPINEJS
-    end
-
     class TabComponent < ActiveLinkComponent
-      default_props as: :a, display: :inline_block, cursor: :pointer, px: 4, py: 2, rounded: true, mr: 1,
-               on_click: proc { POINTER_METHOD_PROPS[pointer_method][:tab][:on_click] }, _hover: { color: 'blue-600' },
-               x_effect: proc { "onActiveChange(active, $el)" }
+      default_props as: :a, display: :inline_block, cursor: :pointer, px: 4, py: 2, rounded: true, mr: 1, _hover: { color: 'blue-600' },
+               on_click: proc { POINTER_METHOD_PROPS[pointer_method][:tab][:on_click] },
+               x_bind: {}
 
       prop :pointer_method, POINTER_METHOD_TYPE
     end

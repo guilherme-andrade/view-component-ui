@@ -23,7 +23,7 @@ module ViewComponentUI
       size_config.options(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super)
     end
 
-    def style_options
+    def style_props
       variant_config.options(self).deeper_merge(super)
     end
 

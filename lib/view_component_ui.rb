@@ -6,6 +6,7 @@ require 'view_component_ui/types'
 require 'view_component_ui/style_properties'
 require 'view_component_ui/style_attribute'
 require 'view_component_ui/javascript_attribute'
+require 'view_component_ui/javascript_code'
 require 'dry/configurable'
 require 'deep_merge/rails_compat'
 
