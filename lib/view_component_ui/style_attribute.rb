@@ -3,8 +3,8 @@ require 'view_component_ui/types'
 
 module ViewComponentUI
   class StyleAttribute < Dry::Struct
-    attribute :name, Types::String
-    attribute :value, Types::String
+    attribute :name, Types::Coercible::String
+    attribute :value, Types::Coercible::String
 
     def to_html_attribute
       {style: "#{html_name}: #{value};" }

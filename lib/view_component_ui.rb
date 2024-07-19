@@ -3,6 +3,8 @@
 require 'view_component_ui/version'
 require 'view_component_ui/engine'
 require 'view_component_ui/types'
+require 'view_component_ui/prop_definition'
+require 'view_component_ui/props'
 require 'view_component_ui/style_properties'
 require 'view_component_ui/style_attribute'
 require 'view_component_ui/javascript_attribute'

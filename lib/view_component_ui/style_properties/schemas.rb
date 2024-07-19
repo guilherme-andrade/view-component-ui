@@ -169,7 +169,7 @@ module ViewComponentUI
         text_decoration_color: { values: COLOR_WITH_WEIGHTS, token: 'decoration' },
         text_decoration_style: { values: ViewComponentUI.config.theme.text_decoration_style, token: 'decoration' },
         text_decoration_thickness: { values: ViewComponentUI.config.theme.text_decoration_thickness, token: 'decoration' },
-        text_decoration: { values: ViewComponentUI.config.theme.text_decoration, token: 'decoration' },
+        text_decoration: { values: ViewComponentUI.config.theme.text_decoration, token: proc { _1 } },
         text_indent: { values: ViewComponentUI.config.theme.spacing, token: 'indent' },
         text_overflow: { values: ViewComponentUI.config.theme.text_overflow, token: proc { |v| v == 'truncate' ? 'truncate' : "text-#{v}" } },
         text_transform: { values: ViewComponentUI.config.theme.text_transform, token: nil },
@@ -186,33 +186,6 @@ module ViewComponentUI
         word_break: { values: ViewComponentUI.config.theme.word_break, token: 'break' },
         z_index: { values: ViewComponentUI.config.theme.z_index, token: 'z', alias: :z },
       }.freeze
-
-      PropertySchema = Dry::Schema.Params do
-        STYLE_PROPERTY_MAP.each do |name, options|
-          optional(name).value(included_in?: options[:values])
-          optional(options[:alias]).value(included_in?: options[:values]) if options[:alias]
-        end
-      end
-
-      BreakpointSchema = Dry::Schema.Params do
-        (ViewComponentUI.config.breakpoints + [:xs]).each do |bp|
-          optional(bp.to_sym).hash(PropertySchema)
-        end
-      end
-
-      PseudoElementSchema = Dry::Schema.Params do
-        ViewComponentUI.config.pseudo_elements.each do |pc|
-          optional(:"_#{pc}").hash(BreakpointSchema)
-        end
-      end
-
-      PseudoClassSchema = Dry::Schema.Params do
-        ViewComponentUI.config.pseudo_classes.each do |pc|
-          optional(:"_#{pc}").hash(PropertySchema.merge(BreakpointSchema).merge(PseudoElementSchema))
-        end
-      end
-
-      StylePropertySchema = [PropertySchema, BreakpointSchema, PseudoElementSchema, PseudoClassSchema].reduce(&:merge)
     end
   end
 end

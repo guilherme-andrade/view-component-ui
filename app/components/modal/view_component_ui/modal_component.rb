@@ -17,7 +17,7 @@ module ViewComponentUI
 
     class WrapperComponent < BoxComponent
       default_props position: :fixed, inset: 0, h: :screen, w: :screen, x_show: "open", display: :flex,
-               justify_content: :center, align_items: :center, x_transition: ""
+                    justify_content: :center, align_items: :center, x_transition: ""
     end
 
     class BackDropComponent < BoxComponent

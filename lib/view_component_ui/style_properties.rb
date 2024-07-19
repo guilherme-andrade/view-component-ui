@@ -3,7 +3,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 module ViewComponentUI
   module StyleProperties # rubocop:disable Metrics/ModuleLength
     COLOR_WEIGHTS = ([nil] + %i[50 100 200 300 400 500 600 700 800 900]).freeze
-    BREAKPOINTS = %i[sm md lg xl 2xl].freeze
+    BREAKPOINTS = %i[xs sm md lg xl 2xl].freeze
     PSEUDO_CLASSES = %i[hover focus active visited disabled active first last first_of_type last_of_type
                         odd even].freeze
     PSEUDO_ELEMENTS = %i[before after file first-letter first-line selection backdrop marker].freeze
@@ -57,7 +57,7 @@ module ViewComponentUI
                  list-item hidden flex inline-flex].freeze
     EMPTY_CELLS = %i[show hide].freeze
     FLEX_BASIS = %i[auto 0].freeze
-    FLEX_DIRECTION = %i[row row-reverse column column-reverse].freeze
+    FLEX_DIRECTION = %i[row row-reverse col col-reverse].freeze
     FLEX_GROW = [0, true].freeze
     FLEX_SHRINK = [0, true].freeze
     FLEX_WRAP = %i[wrap nowrap wrap-reverse].freeze

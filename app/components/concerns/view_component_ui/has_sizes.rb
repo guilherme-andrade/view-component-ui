@@ -10,8 +10,8 @@ module ViewComponentUI
     end
 
     class_methods do
-      def size(name, **options)
-        sizes << Size.new(name, options)
+      def size(name, **props)
+        sizes << Size.new(name, props)
       end
     end
 
@@ -20,12 +20,12 @@ module ViewComponentUI
     end
 
     def html_attributes
-      size_config.options(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super)
+      size_config.props(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super)
     end
 
     def class_list
-      value = size_config.options(self)
-      style_classes = build_style_classes(**value)
+      value = size_config.props(self)
+      style_classes = class_names(**value)
       classes = value[:class].then do |cn|
         cn.is_a?(Proc) ? instance_eval(&cn) : cn
       end
@@ -38,10 +38,10 @@ module ViewComponentUI
       extend Dry::Initializer
 
       param :name, reader: true
-      param :options, default: proc { {} }
+      param :props, default: proc { {} }
 
-      def options(instance)
-        @options.transform_values do |value|
+      def props(instance)
+        @props.transform_values do |value|
           value.is_a?(Proc) ? instance.instance_eval(&value) : value
         end
       end

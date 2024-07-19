@@ -3,9 +3,8 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    minify: false,
     lib: {
-      entry: "/Users/guilherme-andrade/code/guilherme-andrade/projects/view-component-ui/assets/main.ts",
+      entry: "/Users/guilhermeandrade/Code/Other/view-component-ui/assets/main.ts",
       name: "ViewComponentUI",
       fileName: "view-component-ui",
     },
@@ -19,7 +18,7 @@ export default defineConfig({
         },
       },
     },
-    outDir: "/Users/guilherme-andrade/code/guilherme-andrade/projects/view-component-ui/spec/dummy/public/assets",
+    outDir: "/Users/guilhermeandrade/Code/Other/view-component-ui/spec/dummy/public/assets",
     manifest: true
   },
 });

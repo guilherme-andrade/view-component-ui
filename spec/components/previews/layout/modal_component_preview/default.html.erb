@@ -14,7 +14,7 @@
   <% end %>
 
   <%= modal.with_footer do %>
-    <%= render ViewComponentUI::FlexComponent.new(direction: :end) do %>
+    <%= render ViewComponentUI::FlexComponent.new(direction: :row) do %>
       <%= render ViewComponentUI::ButtonComponent.new(color_scheme: :gray, on_click: "open = ! open") do %>
         Close
       <% end %>

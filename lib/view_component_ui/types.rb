@@ -24,7 +24,45 @@ module ViewComponentUI
 
     Component = Instance(ViewComponent::Base)
 
-    PropValue = Types::Interface(:call) | Types::Hash | Types::String | Types::Symbol | Types::Integer |
-                Types::Bool | Types::Nil
+    PropValue = Types::Interface(:call) | Types::Any
+    PropValue = PropValue.dup
+
+    module OneOf
+      def one_of(values, meta: {})
+        constructor do |value|
+          coerced_values = values.map { [true, false, "true", "false", :true, :false].include?(_1) ? (_1.to_s == "true") : _1.to_s.dasherize }
+          coerced_value = case value
+                          when String, Symbol
+                            value.to_s.dasherize
+                          when Integer, Float
+                            value.to_s
+                          when FalseClass, TrueClass, NilClass
+                            value
+                          else
+                            raise ArgumentError, "Could not coerce #{value.inspect} to a prop value"
+                          end
+          next value if coerced_values.include?(coerced_value) || value.nil?
+
+          if meta&.dig(:message).respond_to?(:call)
+            raise ArgumentError, meta[:message].call(value, values)
+          else
+            raise ArgumentError, "#{value.inspect} must be one of #{values.join(', ')}"
+          end
+        rescue ArgumentError => e
+          backtrace = e.backtrace
+          filter_index = backtrace.index { !(_1.include?("lib") || _1.include?("concerns") || _1.include?("gems") || _1.include?("eval")) }
+        
+          if filter_index
+            filtered_backtrace = backtrace[filter_index..-1]
+            e.set_backtrace(filtered_backtrace)
+          end
+        
+          raise e                  
+        end  
+      end
+    end
+
+    PropValue.extend(OneOf)
+    PropValue.freeze
   end
 end

@@ -32,7 +32,8 @@ module ViewComponentUI
     end
 
     def color_scheme_token(weight)
-      color = self.class.theme_color_scheme.fetch(color_scheme.to_sym, color_scheme)
+      color = self.class.theme_color_scheme.fetch(color_scheme.to_s.to_sym, color_scheme)
+      color ||= self.class.theme_color_scheme.values.first
 
       "#{color}-#{weight}"
     end

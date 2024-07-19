@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "build:view-component-ui": "vite build --config /Users/guilherme-andrade/code/guilherme-andrade/projects/view-component-ui/spec/dummy/vite.config.js"
+    "build:view-component-ui": "vite build --config /Users/guilhermeandrade/Code/Other/view-component-ui/spec/dummy/vite.config.js"
   },
   "devDependencies": {
     "@types/alpinejs": "^3.7.2",
