@@ -18,7 +18,9 @@ module ViewComponentUI
     delegate :variants, to: :class
 
     def variant
-      super || variants.keys.first
+      (super || self.class.default_props[:variant]).tap do |variant|
+        raise ArgumentError, "#{self.class.name} is missing a default variant" unless variant
+      end
     end
 
     def variant_props

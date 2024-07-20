@@ -6,6 +6,7 @@ module ViewComponentUI
       def prop(*args)
         prop = PropDefinition.new(*args)
         prop.define_on(self)
+        props.push(prop.name)
       end
 
       def default_props(props = {})
@@ -27,9 +28,9 @@ module ViewComponentUI
       end
     end
 
-    def initialize(**props)
-      @initial_props = Props.new(props)
-      super(**props)
+    def initialize(...)
+      @initial_props = Props.new(...)
+      super(...)
     end
 
     attr_reader :initial_props

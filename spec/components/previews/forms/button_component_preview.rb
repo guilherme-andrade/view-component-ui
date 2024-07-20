@@ -1,8 +1,8 @@
 module Forms
   class ButtonComponentPreview < ViewComponent::Preview
-    # @param variant select {{ ViewComponentUI::ButtonComponent.variants.map(&:name) }} "The variant of the button"
+    # @param variant select {{ ViewComponentUI::ButtonComponent.variants.keys }} "The variant of the button"
     # @param color_scheme select {{ ViewComponentUI.config.theme.color_scheme.keys }} "The color scheme of the button"
-    # @param size select {{ ViewComponentUI::ButtonComponent.sizes.map(&:name) }} "The size of the button"
+    # @param size select {{ ViewComponentUI::ButtonComponent.sizes.keys }} "The size of the button"
     def default(size: :md, variant: :solid, color_scheme: :primary)
       render ViewComponentUI::ButtonComponent.new(size:, variant:, color_scheme:) do
         "This is a #{size} #{variant} #{color_scheme} button."

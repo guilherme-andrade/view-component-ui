@@ -23,12 +23,12 @@ module ViewComponentUI
     end
 
     def bind(context)
-      @props.deep_transform_values! do |value|
+      new_props = @props.deep_transform_values do |value|
         final_value = value
         final_value = context.instance_eval(&final_value) while final_value.respond_to?(:call)
         final_value
       end
-      self
+      Props.new(new_props)
     end
 
     def slice(*keys)

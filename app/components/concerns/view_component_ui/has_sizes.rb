@@ -18,7 +18,9 @@ module ViewComponentUI
     delegate :sizes, to: :class
 
     def size
-      super || sizes.keys.first
+      (super || self.class._default_props[:size]).tap do |size|
+        raise ArgumentError, "#{self.class.name} is missing a default size" unless size
+      end
     end
 
     def size_props
