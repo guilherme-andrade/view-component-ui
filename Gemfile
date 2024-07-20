@@ -30,4 +30,5 @@ group :development, :test do
   gem 'rubocop-performance', '>= 1.18.0'
   gem 'rubocop-rails', '>= 2.20.2'
   gem 'rubocop-rspec', '>= 2.23.2'
+  gem 'derailed_benchmarks'
 end

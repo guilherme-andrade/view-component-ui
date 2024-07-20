@@ -22,9 +22,10 @@ module ViewComponentUI
     default_props x_data: proc { POINTER_METHOD_PROPS[pointer_method][:tabs][:x_data] }
 
     class TabComponent < ActiveLinkComponent
+      # tw-bg-blue-100
       default_props as: :a, display: :inline_block, cursor: :pointer, px: 4, py: 2, rounded: true, mr: 1, _hover: { color: 'blue-600' },
                on_click: proc { POINTER_METHOD_PROPS[pointer_method][:tab][:on_click] },
-               x_bind: {}
+               x_bind: { class: proc { js({ string_class_names(bg: "blue-100") => js("active === $el.dataset.id") }) } }
 
       prop :pointer_method, POINTER_METHOD_TYPE
     end

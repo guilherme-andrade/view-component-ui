@@ -16,7 +16,7 @@ module ViewComponentUI
     class AccordionItemComponent < BoxComponent
       # tw-border-t first:tw-border-t-0
       default_props border_top: true, _first: { border_top: 0 },
-                    on_click: "activeIndex = index", x_data: -> { "{ index: #{index} }" }
+                    on_click: "activeIndex = index", x_data: proc { "{ index: #{index} }" }
 
       attr_accessor :index
 

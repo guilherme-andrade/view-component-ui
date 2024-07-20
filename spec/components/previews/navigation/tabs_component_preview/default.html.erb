@@ -1,25 +1,27 @@
-<%= render ViewComponentUI::TabsComponent.new(pointer_method: :id) do |tabs| %>
-  <%= tabs.with_tab(to: "default", data: { id: "pane1" }) do %>
-    Active link
-  <% end %>
+<%= render ViewComponentUI::ContainerComponent.new(mt: 10) do %>
+  <%= render ViewComponentUI::TabsComponent.new(pointer_method: :id) do |tabs| %>
+    <%= tabs.with_tab(to: "default", data: { id: "pane1" }) do %>
+      Active link
+    <% end %>
 
-  <%= tabs.with_tab(data: { id: "pane2" }) do %>
-    Another link
-  <% end %>
+    <%= tabs.with_tab(data: { id: "pane2" }) do %>
+      Another link
+    <% end %>
 
-  <%= tabs.with_tab(data: { id: "pane3" }) do %>
-    A third link
-  <% end %>
+    <%= tabs.with_tab(data: { id: "pane3" }) do %>
+      A third link
+    <% end %>
 
-  <%= tabs.with_tab_pane(id: "pane1") do %>
-    This is the content of the first tab.
-  <% end %>
+    <%= tabs.with_tab_pane(id: "pane1", p: 3, pt: 5) do %>
+      This is the content of the first tab.
+    <% end %>
 
-  <%= tabs.with_tab_pane(id: "pane2") do %>
-    This is the content of the second tab.
-  <% end %>
+    <%= tabs.with_tab_pane(id: "pane2", p: 3, pt: 5) do %>
+      This is the content of the second tab.
+    <% end %>
 
-  <%= tabs.with_tab_pane(id: "pane3") do %>
-    This is the content of the third tab.
+    <%= tabs.with_tab_pane(id: "pane3", p: 3, pt: 5) do %>
+      This is the content of the third tab.
+    <% end %>
   <% end %>
 <% end %>

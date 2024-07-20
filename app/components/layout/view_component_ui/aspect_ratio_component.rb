@@ -1,6 +1,6 @@
 module ViewComponentUI
   class AspectRatioComponent < BoxComponent
-    default_props position: :relative, max_width: :md
+    default_props position: :relative, max_w: "2xl"
 
     renders_one :html, lambda { |**props|
       BoxComponent.new(

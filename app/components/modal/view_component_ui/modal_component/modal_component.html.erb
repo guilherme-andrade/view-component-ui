@@ -2,7 +2,7 @@
   <%= trigger %>
 
   <%= render ViewComponentUI::BoxComponent.new(as: :template, x_teleport: "body") do%>
-    <%= render WrapperComponent.new(**props) do %>
+    <%= render WrapperComponent.new(**props.to_h) do %>
       <%= render BackDropComponent.new %>
       <%= render DialogComponent.new do %>
         <%= head %>

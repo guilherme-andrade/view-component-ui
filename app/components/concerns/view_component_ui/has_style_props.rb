@@ -57,24 +57,20 @@ module ViewComponentUI
     end
 
     def class_list
-      super.to_s.split(/\s+/).concat(class_names(**style_props)).compact
+      binding.pry if variant == :solid
+      super.to_s.split(/\s+/).concat(class_names(style_props)).compact
     end
 
     def style_props
       props.slice(*self.class.style_props).compact
     end
 
-    def class_names(**opts)
-      compiled_options = compile_proc_options(**opts)
-      class_builder.call(**compiled_options)
+    def class_names(...)
+      Compiler::ClassListBuilder.new.call(...)
     end
 
-    def compile_proc_options(**opts)
-      opts.deep_transform_values { _1.respond_to?(:call) ? instance_eval(&_1) : _1 }
-    end
-
-    def class_builder
-      @class_builder ||= Compiler::ClassListBuilder.new
+    def string_class_names(props)
+      class_names(props).join(' ')
     end
   end
 end

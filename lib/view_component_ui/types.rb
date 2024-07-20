@@ -30,18 +30,7 @@ module ViewComponentUI
     module OneOf
       def one_of(values, meta: {})
         constructor do |value|
-          coerced_values = values.map { [true, false, "true", "false", :true, :false].include?(_1) ? (_1.to_s == "true") : _1.to_s.dasherize }
-          coerced_value = case value
-                          when String, Symbol
-                            value.to_s.dasherize
-                          when Integer, Float
-                            value.to_s
-                          when FalseClass, TrueClass, NilClass
-                            value
-                          else
-                            raise ArgumentError, "Could not coerce #{value.inspect} to a prop value"
-                          end
-          next value if coerced_values.include?(coerced_value) || value.nil?
+          next value if value.nil? || value.respond_to?(:call) || values.any? { _1.to_s.dasherize == value.to_s.dasherize }
 
           if meta&.dig(:message).respond_to?(:call)
             raise ArgumentError, meta[:message].call(value, values)

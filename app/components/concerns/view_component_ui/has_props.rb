@@ -5,12 +5,11 @@ module ViewComponentUI
     class_methods do
       def prop(*args)
         prop = PropDefinition.new(*args)
-        props.push(prop.name)
         prop.define_on(self)
       end
 
-      def default_props(**props)
-        _default_props.merge!(props)
+      def default_props(props = {})
+        @_default_props = _default_props.merge(Props.new(props.to_h))
       end
 
       def _default_props
@@ -19,7 +18,7 @@ module ViewComponentUI
 
       def inherited(base)
         super
-        base.default_props(**_default_props)
+        base.default_props(_default_props)
         base.props.push(*props)
       end
 
@@ -28,28 +27,19 @@ module ViewComponentUI
       end
     end
 
-    def initialize(**initial_props)
-      @initial_props = Props.new(initial_props)
-
-      super(**default_and_initial_props)
+    def initialize(**props)
+      @initial_props = Props.new(props)
+      super(**props)
     end
 
     attr_reader :initial_props
 
     def default_props
-      @default_props ||= self.class._default_props
-    end
-
-    def default_and_initial_props
-      @default_and_initial_props ||= default_props.merge(initial_props)
+      self.class._default_props
     end
 
     def props
-      @props ||= default_and_initial_props.merge(method_override_props)
-    end
-
-    def method_override_props
-      @method_override_props ||= Props.defined_in(self)
+      @props ||= default_props.merge(initial_props).merge(Props.overriden_in(self)).bind(self)
     end
   end
 end

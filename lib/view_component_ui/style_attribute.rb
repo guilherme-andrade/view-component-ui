@@ -15,12 +15,12 @@ module ViewComponentUI
     end
 
     class List
-      def initialize(attributes)
-        @attributes = attributes.map { |name, value| StyleAttribute.new(name:, value:) }
+      def initialize(styles)
+        @styles = styles.map { |name, value| StyleAttribute.new(name:, value:) }
       end
 
       def to_html_attributes
-        values = @attributes.map { _1.to_html_attribute[:style] }.join(' ')
+        values = @styles.map { _1.to_html_attribute[:style] }.join(' ')
 
         { style: values }
       end

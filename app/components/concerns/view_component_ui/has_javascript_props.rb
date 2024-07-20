@@ -13,8 +13,7 @@ module ViewComponentUI
     end
 
     def javascript_attributes
-      values = props.slice(*JavascriptAttribute::ALL)
-      JavascriptAttribute::List.new(component: self, values:).to_html_attributes
+      JavascriptAttribute::List.new(props: props.slice(*JavascriptAttribute::ALL)).to_html_attributes
     end
 
     class_methods do

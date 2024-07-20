@@ -53,7 +53,7 @@ module ViewComponentUI
     end
 
     def render_self(&block)
-      content_tag(as, **html_attributes, &block)
+      content_tag(as, **html_attributes.to_h, &block)
     end
 
     def style_string
