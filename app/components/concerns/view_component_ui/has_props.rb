@@ -29,8 +29,8 @@ module ViewComponentUI
     end
 
     def initialize(...)
-      @initial_props = Props.new(...)
       super(...)
+      @initial_props = Props.new(...)
     end
 
     attr_reader :initial_props
@@ -40,7 +40,7 @@ module ViewComponentUI
     end
 
     def props
-      @props ||= default_props.merge(initial_props).merge(Props.overriden_in(self)).bind(self)
+      default_props.merge(initial_props).merge(Props.overriden_in(self)).bind(self)
     end
   end
 end

@@ -1,4 +1,4 @@
-module Forms
+module Buttons
   class ButtonComponentPreview < ViewComponent::Preview
     # @param variant select {{ ViewComponentUI::ButtonComponent.variants.keys }} "The variant of the button"
     # @param color_scheme select {{ ViewComponentUI.config.theme.color_scheme.keys }} "The color scheme of the button"

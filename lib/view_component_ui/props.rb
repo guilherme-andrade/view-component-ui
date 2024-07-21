@@ -16,14 +16,14 @@ module ViewComponentUI
       @props = props
     end
 
-    delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, to: :props
+    delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, to: :to_h
 
     def to_h
-      @props
+      @props.deep_dup
     end
 
     def bind(context)
-      new_props = @props.deep_transform_values do |value|
+      new_props = to_h.deep_transform_values do |value|
         final_value = value
         final_value = context.instance_eval(&final_value) while final_value.respond_to?(:call)
         final_value
@@ -32,35 +32,23 @@ module ViewComponentUI
     end
 
     def slice(*keys)
-      Props.new(@props.slice(*keys))
+      Props.new(to_h.slice(*keys))
     end
 
     def compact
-      Props.new(@props.compact)
+      Props.new(to_h.compact)
     end
 
     def merge(other)
-      Props.new(other.to_h.deeper_merge(@props))
+      Props.new(other.to_h.deeper_merge(to_h))
     end
 
     def transform_values(&block)
-      Props.new(@props.deep_transform_values(&block))
-    end
-
-    def deconstruct_keys(keys)
-      keys.each_with_object({}) do |key, hash|
-        hash[key] = @props[key]
-      end
-    end
-
-    def deconstruct
-      @props
+      Props.new(to_h.deep_transform_values(&block))
     end
 
     def inspect
-      "#<#{self.class.name} #{@props}>"
+      "#<#{self.class.name} #{to_h}>"
     end
-
-    private attr_reader :props
   end
 end

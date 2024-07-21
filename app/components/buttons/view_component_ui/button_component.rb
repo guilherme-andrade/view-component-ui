@@ -1,11 +1,11 @@
 module ViewComponentUI
-  class ButtonComponent < BoxComponent
+  class ButtonComponent < GroupComponent
     include HasSizes
     include HasVariants
     include HasColorScheme
 
     default_props variant: :solid, size: :md, color_scheme: :primary, as: :button, type: :button,
-             border_radius: :md, display: :inline_block, cursor: :pointer, _hover: { bg: 'white' }
+             border_radius: :md, cursor: :pointer, _hover: { bg: 'white' }, gap: 1, display: :inline_flex, align_items: :center
 
     variant :solid,
             color: 'white',
@@ -30,5 +30,17 @@ module ViewComponentUI
     size :sm, font_size: :sm, py: '1', px: '2'
     size :md, font_size: :base, py: '2', px: '4'
     size :lg, font_size: :lg, py: '3', px: '6'
+
+    prop :icon_left, Types::String, optional: true
+    prop :icon_right, Types::String, optional: true
+
+    # tw-mr-1 tw-ml-1
+    erb_template <<~ERB
+      <%= render_self do %>
+        <%= render(ViewComponentUI::IconComponent.new(icon: icon_left, mr: 1)) if icon_left %>
+        <%= content %>
+        <%= render(ViewComponentUI::IconComponent.new(icon: icon_right, ml: 1)) if icon_right %>
+      <% end %>
+    ERB
   end
 end

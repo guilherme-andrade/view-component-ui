@@ -14,11 +14,11 @@ module ViewComponentUI
     prop :level, default: proc { 2 }
 
     def font_size
-      initial_props[:font_size] || FONT_SIZES[level]
+      initial_props&.dig(:font_size) || FONT_SIZES[level]
     end
 
     def as
-      initial_props[:as] || "h#{level}"
+      initial_props&.dig(:as) || "h#{level}"
     end
   end
 end

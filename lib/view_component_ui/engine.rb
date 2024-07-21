@@ -13,7 +13,7 @@ module ViewComponentUI
       [root.join('spec/components/previews').to_s]
     end
 
-    %w[layout forms feedback typography media_and_icons data_display navigation overlay other modal].each do
+    %w[layout forms feedback typography media_and_icons data_display navigation overlay other modal buttons misc].each do
       config.autoload_paths << root.join("app/components/#{_1}")
     end
 
