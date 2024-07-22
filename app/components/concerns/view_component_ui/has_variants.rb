@@ -6,7 +6,7 @@ module ViewComponentUI
       class_attribute :variants
       self.variants = {}.with_indifferent_access
 
-      prop :variant, Types::Coercible::Symbol.optional, optional: true
+      prop :variant, Types::Coercible::Symbol.optional
     end
 
     class_methods do
@@ -25,10 +25,6 @@ module ViewComponentUI
 
     def variant_props
       variants[variant]
-    end
-
-    def html_attributese
-      variant_props.bind(self).slice(*HasHTMLCommonProps::HTML_ATTRIBUTES).merge(super).to_h
     end
 
     def default_props

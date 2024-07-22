@@ -1,7 +1,7 @@
 module ViewComponentUI
   class ActiveLinkComponent < LinkComponent
-    prop :exact, default: false, optional: true
-    prop :active, default: nil, optional: true
+    prop :exact, Types::Bool.default(false).optional
+    prop :active, Types::Bool.optional
     alias exact? exact
 
     default_props color: proc { active? ? 'blue-900' : 'blue-600' } # tw-text-blue-900 tw-text-blue-600

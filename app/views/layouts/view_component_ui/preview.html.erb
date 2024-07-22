@@ -9,9 +9,9 @@
 </head>
 <body>
 
-<div class="tw-p-5">
+<%= render ViewComponentUI::BoxComponent.new(p: 10) do %>
   <%= yield %>
-</div>
+<% end %>
 
 </body>
 </html>

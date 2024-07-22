@@ -5,7 +5,7 @@ module ViewComponentUI
     include HasColorScheme
 
     default_props variant: :solid, size: :md, color_scheme: :primary, as: :button, type: :button,
-             border_radius: :md, cursor: :pointer, _hover: { bg: 'white' }, gap: 1, display: :inline_flex, align_items: :center
+             rounded: :md, cursor: :pointer, _hover: { bg: 'white' }, gap: 1, display: :inline_flex, align_items: :center
 
     variant :solid,
             color: 'white',
@@ -31,8 +31,8 @@ module ViewComponentUI
     size :md, font_size: :base, py: '2', px: '4'
     size :lg, font_size: :lg, py: '3', px: '6'
 
-    prop :icon_left, Types::String, optional: true
-    prop :icon_right, Types::String, optional: true
+    prop :icon_left, Types::String
+    prop :icon_right, Types::String
 
     # tw-mr-1 tw-ml-1
     erb_template <<~ERB

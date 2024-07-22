@@ -11,7 +11,7 @@ module ViewComponentUI
 
     default_props level: 2, font_weight: 'bold'
 
-    prop :level, default: proc { 2 }
+    prop :level, Types::Coercible::Integer.default(2).enum(1, 2, 3, 4, 5, 6).optional
 
     def font_size
       initial_props&.dig(:font_size) || FONT_SIZES[level]

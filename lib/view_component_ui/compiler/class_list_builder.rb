@@ -1,5 +1,3 @@
-require 'view_component_ui/style_properties/schemas'
-
 module ViewComponentUI
   module Compiler
     class ClassListBuilder
@@ -114,7 +112,7 @@ module ViewComponentUI
       end
 
       def config_style_prop_properties
-        StyleProperties::Schemas::STYLE_PROPERTY_MAP
+        Constants::STYLE_PROP_MAP
       end
 
       def find_property_config(name_or_alias)

@@ -1,6 +1,6 @@
 module ViewComponentUI
   class TabsComponent < PaperComponent
-    POINTER_METHOD_TYPE = Types::Coercible::String.enum('index', 'id')
+    POINTER_METHOD_TYPE = Types::Coercible::String.default('index').enum('index', 'id').optional
     POINTER_METHOD_PROPS = {
       index: {
         tabs: { x_data: "{ active: 0 }" },
@@ -17,7 +17,7 @@ module ViewComponentUI
     renders_many :tabs, proc { TabComponent.new(**_1, pointer_method:) }
     renders_many :tab_panes, proc { TabPaneComponent.new(**_1, pointer_method:) }
 
-    prop :pointer_method, POINTER_METHOD_TYPE, default: proc { 'index' }, optional: true
+    prop :pointer_method, POINTER_METHOD_TYPE
 
     default_props x_data: proc { POINTER_METHOD_PROPS[pointer_method][:tabs][:x_data] }
 

@@ -1,10 +1,15 @@
 <%= render ViewComponentUI::BoxComponent.new(mt: 10, pt: 10) do %>
-    <%= render ViewComponentUI::ContainerComponent.new(mt: 10, pt: 10) do %>
-        <%= render ViewComponentUI::HeadingComponent.new do %>
-        Hello, world!!
-        <% end %>
-        <%= render ViewComponentUI::TextComponent.new do %>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil facere laboriosam aliquam ipsa illum enim officiis, accusantium itaque perspiciatis dolorum debitis voluptatum aspernatur excepturi commodi quisquam alias, ex voluptatibus? Veniam!
-        <% end %>
+  <%= render ViewComponentUI::ContainerComponent.new(mt: 10, pt: 10) do %>
+    <%= render ViewComponentUI::HeadingComponent.new do %>
+      Hello, world!!
     <% end %>
+    <%= render ViewComponentUI::TextComponent.new do %>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil facere laboriosam aliquam ipsa illum enim officiis, accusantium itaque perspiciatis dolorum debitis voluptatum aspernatur excepturi commodi quisquam alias, ex voluptatibus? Veniam!
+    <% end %>
+  <% end %>
 <% end %>
+
+<%= render ViewComponentUI::ActionIconComponent.new(icon: 'trash', color_scheme: :danger, size: :sm) %>
+<%= render ViewComponentUI::ActionIconComponent.new(icon: 'trash', color_scheme: :danger, size: :md) %>
+<%= render ViewComponentUI::ActionIconComponent.new(icon: 'trash', color_scheme: :danger, size: :lg) %>
+<%= render ViewComponentUI::ActionIconComponent.new(icon: 'trash', color_scheme: :danger, size: :xl) %>

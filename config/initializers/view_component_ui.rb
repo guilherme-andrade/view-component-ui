@@ -1,8 +1,7 @@
 ViewComponentUI.configure do |config|
   config.content = [
-    ViewComponentUI::Engine.root.join('app/components'),
-    ViewComponentUI::Engine.root.join('app/components'),
-    ViewComponentUI::Engine.root.join('spec/components')
+    ViewComponentUI::Engine.root.join('app'),
+    ViewComponentUI::Engine.root.join('app/views')
   ]
 
   config.package_json_path = ViewComponentUI::Engine.root.join('package.json')

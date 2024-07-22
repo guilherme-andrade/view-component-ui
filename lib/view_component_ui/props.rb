@@ -1,9 +1,11 @@
-module ViewComponentUI
-  class Props
-    def self.overriden_in(instance)
-      raise ArgumentError, "class must respond to #props" unless instance.class.respond_to?(:props)
+require 'dry-struct'
 
-      values = instance.class.props.each_with_object({}) do |prop, hash|
+module ViewComponentUI
+  class Props < Dry::Struct
+    transform_keys(&:to_sym)
+
+    def self.overriden_in(instance)
+      values = Types::PROPS.each_with_object({}) do |(prop), hash|
         next unless instance.class.instance_methods(false).include?(prop)
 
         value = instance.send(prop)
@@ -12,14 +14,14 @@ module ViewComponentUI
       new(values)
     end
 
-    def initialize(props = {})
-      @props = props
+    delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, :dig, to: :to_h
+
+    def validate!
+      Types::PropTypes[@attributes]
     end
 
-    delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, to: :to_h
-
     def to_h
-      @props.deep_dup
+      @attributes.deep_dup
     end
 
     def bind(context)
@@ -28,23 +30,23 @@ module ViewComponentUI
         final_value = context.instance_eval(&final_value) while final_value.respond_to?(:call)
         final_value
       end
-      Props.new(new_props)
+      new(new_props)
     end
 
     def slice(*keys)
-      Props.new(to_h.slice(*keys))
+      new(to_h.slice(*keys))
     end
 
     def compact
-      Props.new(to_h.compact)
+      new(to_h.compact)
     end
 
     def merge(other)
-      Props.new(other.to_h.deeper_merge(to_h))
+      new(other.to_h)
     end
 
     def transform_values(&block)
-      Props.new(to_h.deep_transform_values(&block))
+      new(to_h.deep_transform_values(&block))
     end
 
     def inspect

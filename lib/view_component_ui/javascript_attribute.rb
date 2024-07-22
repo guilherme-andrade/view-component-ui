@@ -8,9 +8,6 @@ module ViewComponentUI
       x_bind: :all,
     }.freeze
 
-    ALL = %i[x_data x_init x_show x_bind x_on x_text x_html x_model x_modelable x_for x_transition
-             x_effect x_ignore x_ref x_cloak x_teleport x_if x_id on_click on_focus].freeze
-
     attribute :name, Types::Coercible::Symbol
     attribute :value, Types::PropValue
 

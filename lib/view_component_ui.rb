@@ -1,21 +1,18 @@
 # frozen_string_literal: true
 
-require 'view_component_ui/version'
-require 'view_component_ui/engine'
-require 'view_component_ui/types'
-require 'view_component_ui/prop_definition'
-require 'view_component_ui/props'
-require 'view_component_ui/style_properties'
-require 'view_component_ui/style_attribute'
-require 'view_component_ui/javascript_attribute'
-require 'view_component_ui/javascript_code'
 require 'dry/configurable'
 require 'deep_merge/rails_compat'
+
+require 'view_component_ui/version'
+require 'view_component_ui/engine'
+require 'view_component_ui/constants'
+require 'view_component_ui/props'
+require 'view_component_ui/javascript_code'
 
 module ViewComponentUI
   extend Dry::Configurable
 
-  include StyleProperties
+  include Constants
 
   setting :output_path, default: proc { Engine.root.join('tmp/view_component_ui/compiler') }
   setting :breakpoints, default: BREAKPOINTS

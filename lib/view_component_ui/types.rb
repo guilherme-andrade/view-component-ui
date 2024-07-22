@@ -3,17 +3,7 @@ require 'dry-types'
 module ViewComponentUI
   module Types
     include Dry.Types()
-
-    HTML_TAGS = %i[
-      a abbr address area article aside audio b base bdi bdo blockquote body br
-      button canvas caption cite code col colgroup data datalist dd del details
-      dfn dialog div dl dt em embed fieldset figcaption figure footer form h1 h2
-      h3 h4 h5 h6 head header hr html i iframe img input ins kbd label legend li
-      link main map mark meta meter nav noframes noscript object ol optgroup option
-      output p param picture pre progress q rp rt ruby s samp script section select
-      small source span strong style sub summary sup svg table tbody td template
-      textarea tfoot th thead time title tr track u ul var video wbr
-    ].freeze
+    include Constants
 
     StringOrNil = Coercible::String.optional
     IntOrNil = Coercible::Integer.optional
@@ -25,33 +15,90 @@ module ViewComponentUI
     Component = Instance(ViewComponent::Base)
 
     PropValue = Types::Interface(:call) | Types::Any
-    PropValue = PropValue.dup
 
-    module OneOf
-      def one_of(values, meta: {})
+    module OfStyleType
+      def of_type(type)
         constructor do |value|
+          values = STYLE_PROP_MAP[type].fetch(:values, [])
+          values = values.call if values.respond_to?(:call)
           next value if value.nil? || value.respond_to?(:call) || values.any? { _1.to_s.dasherize == value.to_s.dasherize }
 
-          if meta&.dig(:message).respond_to?(:call)
-            raise ArgumentError, meta[:message].call(value, values)
-          else
-            raise ArgumentError, "#{value.inspect} must be one of #{values.join(', ')}"
-          end
-        rescue ArgumentError => e
-          backtrace = e.backtrace
-          filter_index = backtrace.index { !(_1.include?("lib") || _1.include?("concerns") || _1.include?("gems") || _1.include?("eval")) }
-        
-          if filter_index
-            filtered_backtrace = backtrace[filter_index..-1]
-            e.set_backtrace(filtered_backtrace)
-          end
-        
-          raise e                  
-        end  
+          raise ArgumentError, "#{value.inspect} must be one of #{values.join(', ')}"
+        end
       end
     end
 
-    PropValue.extend(OneOf)
-    PropValue.freeze
+    StyleProp = PropValue.dup.extend(OfStyleType)
+
+    HTML_PROPS = {
+      as: (Types::Tag | Types.Instance(ViewComponent::Base)),
+      accesskey: Types::StringOrNil,
+      class: Types::StringOrNil,
+      contenteditable: Types::BoolOrNil,
+      data: Types::HashOrNil,
+      dir: Types::StringOrNil,
+      draggable: Types::BoolOrNil,
+      hidden: Types::BoolOrNil,
+      id: Types::StringOrNil,
+      lang: Types::StringOrNil,
+      spellcheck: Types::BoolOrNil,
+      style: Types::HashOrNil,
+      tabindex: Types::StringOrNil,
+      title: Types::StringOrNil,
+      translate: Types::BoolOrNil,
+      aria: Types::HashOrNil,
+      role: Types::StringOrNil,
+      name: Types::StringOrNil,
+      value: Types::StringOrNil,
+      type: Types::StringOrNil,
+      disabled: Types::BoolOrNil,
+      readonly: Types::BoolOrNil,
+      autofocus: Types::BoolOrNil,
+      required: Types::BoolOrNil,
+      placeholder: Types::StringOrNil,
+      maxlength: Types::IntOrNil,
+      minlength: Types::IntOrNil,
+      autocomplete: Types::StringOrNil,
+      pattern: Types::StringOrNil,
+      _size: Types::IntOrNil,
+      src: Types::StringOrNil,
+      alt: Types::StringOrNil,
+      step: Types::StringOrNil,
+      min: Types::StringOrNil,
+      max: Types::StringOrNil,
+      list: Types::StringOrNil,
+      multiple: Types::BoolOrNil,
+      form: Types::StringOrNil,
+    }
+
+    PROPS = HTML_PROPS.merge(
+      STYLE_PROP_MAP.map { |key, value| [key, Types::StyleProp.of_type(key)] }.to_h
+    ).merge(
+      JS_PROPS.map { |key| [key, Types::PropValue] }.to_h
+    ).transform_keys { :"#{_1}?" }
+
+    BasePropTypes = Types::Hash.schema(PROPS)
+
+    BREAKPOINT_PROPS = ViewComponentUI.config.breakpoints.each_with_object({}) do |bp, hash|
+      hash[:"_#{bp}?"] = BasePropTypes
+    end
+
+    BreakpointPropTypes = Types::Hash.schema(BREAKPOINT_PROPS)
+
+    PSEUDO_ELEMENT_PROPS = ViewComponentUI.config.pseudo_elements.each_with_object({}) do |pe, hash|
+      hash[:"_#{pe}?"] = BreakpointPropTypes.merge(BasePropTypes)
+    end
+
+    PseudoElementPropTypes = Types::Hash.schema(PSEUDO_ELEMENT_PROPS)
+
+    PSEUDO_CLASS_PROPS = ViewComponentUI.config.pseudo_classes.each_with_object({}) do |pc, hash|
+      hash[:"_#{pc}?"] = PseudoElementPropTypes.merge(BreakpointPropTypes).merge(BasePropTypes)
+    end
+
+    PseudoClassPropTypes = Types::Hash.schema(PSEUDO_CLASS_PROPS)
+
+    PROPS.merge!(BREAKPOINT_PROPS).merge!(PSEUDO_ELEMENT_PROPS).merge!(PSEUDO_CLASS_PROPS)
+
+    PropTypes = Types::Hash.schema(PROPS)
   end
 end

@@ -4,9 +4,7 @@ module ViewComponentUI
 
     class_methods do
       def prop(*args)
-        prop = PropDefinition.new(*args)
-        prop.define_on(self)
-        props.push(prop.name)
+        Props.attribute *args
       end
 
       def default_props(props = {})
@@ -20,17 +18,16 @@ module ViewComponentUI
       def inherited(base)
         super
         base.default_props(_default_props)
-        base.props.push(*props)
-      end
-
-      def props
-        @props ||= []
       end
     end
 
     def initialize(...)
-      super(...)
       @initial_props = Props.new(...)
+      super
+    end
+
+    def before_render
+      props.validate!
     end
 
     attr_reader :initial_props
