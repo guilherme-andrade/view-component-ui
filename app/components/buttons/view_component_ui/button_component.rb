@@ -37,9 +37,9 @@ module ViewComponentUI
     # tw-mr-1 tw-ml-1
     erb_template <<~ERB
       <%= render_self do %>
-        <%= render(ViewComponentUI::IconComponent.new(icon: icon_left, mr: 1)) if icon_left %>
+        <%= render(ViewComponentUI::IconComponent.new(icon: render_props[:icon_left], mr: 1)) if render_props[:icon_left] %>
         <%= content %>
-        <%= render(ViewComponentUI::IconComponent.new(icon: icon_right, ml: 1)) if icon_right %>
+        <%= render(ViewComponentUI::IconComponent.new(icon: render_props[:icon_right], ml: 1)) if render_props[:icon_right] %>
       <% end %>
     ERB
   end

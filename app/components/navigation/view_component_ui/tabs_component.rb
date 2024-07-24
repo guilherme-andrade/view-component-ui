@@ -8,14 +8,14 @@ module ViewComponentUI
         tab_pane: { x_show: "active == Array.prototype.indexOf.call($el.parentNode.children, $el)" }
       },
       id: {
-        tabs: { x_data: proc { "{ active: '#{tab_panes.first.id}' } " } },
+        tabs: { x_data: proc { "{ active: '#{tab_panes.first&.props&.dig(:id)}' } " } },
         tab: { on_click: "active = $el.dataset.id" },
         tab_pane: { x_show: "active === $el.id" }
       }
     }.with_indifferent_access.freeze
 
-    renders_many :tabs, proc { TabComponent.new(**_1, pointer_method: props[:pointer_method]) }
-    renders_many :tab_panes, proc { TabPaneComponent.new(**_1, pointer_method: props[:pointer_method]) }
+    renders_many :tabs, proc { TabComponent.new(**_1, pointer_method: render_props[:pointer_method]) }
+    renders_many :tab_panes, proc { TabPaneComponent.new(**_1, pointer_method: render_props[:pointer_method]) }
 
     prop :pointer_method, POINTER_METHOD_TYPE
 

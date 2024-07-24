@@ -5,7 +5,7 @@ module ViewComponentUI
     prop :to, Types::String.optional
 
     def html_attributes
-      super.merge(href: to)
+      super.merge(href: render_props[:to])
     end
   end
 end

@@ -20,6 +20,7 @@ module ViewComponentUI
     config.after_initialize do
       require 'view_component_ui/types'
       require 'view_component_ui/javascript_attribute'
+      require 'view_component_ui/style_attribute'
     end
   end
 end

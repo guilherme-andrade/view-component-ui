@@ -2,11 +2,13 @@ module ViewComponentUI
   class Base < ViewComponent::Base
     extend Dry::Initializer
 
+    InvalidRenderPropsMethodCall = Class.new(StandardError)
+
     class << self
       def prop(*args)
         options = args.extract_options!
         key = options[:required] ? args.first : :"#{args.first}?"
-        defined_props[key] = args.last || Types::Any
+        prop_definitions[key] = args.last || Types::Any
       end
 
       def default_props(props = {})
@@ -20,11 +22,11 @@ module ViewComponentUI
       def inherited(base)
         super
         base.default_props(_default_props)
-        base.defined_props.merge!(defined_props)
+        base.prop_definitions.merge!(prop_definitions)
       end
 
-      def defined_props
-        @defined_props ||= {}
+      def prop_definitions
+        @prop_definitions ||= {}
       end
 
       def js(string)
@@ -32,13 +34,12 @@ module ViewComponentUI
       end
 
       def props_type
-        Types::Hash.schema(defined_props).merge(Types::PropTypes)
+        Types::Hash.schema(prop_definitions).merge(Types::PropTypes)
       end
     end
 
     def initialize(...)
       @initial_props = Props.new(...)
-      super
     end
 
     delegate :js, to: :class
@@ -54,10 +55,10 @@ module ViewComponentUI
     end
 
     def render_self(&block)
-      if props[:as].is_a?(ViewComponentUI::Base)
-        render props[:as].new(**props.except(:as), &block)
+      if render_props[:as].is_a?(ViewComponentUI::Base)
+        render render_props[:as].new(**render_props.except(:as), &block)
       else
-        content_tag(props.fetch(:as, :div), **html_attributes.to_h, &block)
+        content_tag(render_props.fetch(:as, :div), **html_attributes.to_h, &block)
       end
     end
 
@@ -70,28 +71,34 @@ module ViewComponentUI
     def html_attributes
       class_values = class_list.flatten.uniq.compact.join(' ')
 
-      Types::HTML_PROPS.keys.index_with { props[_1] }
+      Types::HTML_PROPS.keys.index_with { render_props[_1] }
                             .merge(class: class_values, style: style_string)
                             .compact
                             .merge(javascript_attributes)
     end
 
     def style_string
-      return unless props[:style]
+      return unless render_props[:style]
 
-      StyleAttribute::List.new(props[:style]).to_html_attributes[:style]
+      StyleAttribute::List.new(render_props[:style]).to_html_attributes[:style]
     end
 
     def props
-      default_props.merge(initial_props).merge(Props.overriden_in(self)).bind(self)
+      default_props.merge(initial_props)
+    end
+
+    def render_props
+      raise InvalidRenderPropsMethodCall, '#render_props can only be called when rendering. Please use #props' if view_context.nil?
+
+      props.merge(Props.overriden_in(self)).bind(self)
     end
 
     def javascript_attributes
-      JavascriptAttribute::List.new(props: props.slice(*Constants::JS_PROPS)).to_html_attributes
+      JavascriptAttribute::List.new(props: render_props.slice(*Constants::JS_PROPS)).to_html_attributes
     end
 
     def class_list
-      props[:class_list].to_s.split(/\s+/).concat(class_names(props)).compact
+      render_props[:class_list].to_s.split(/\s+/).concat(class_names(render_props)).compact
     end
 
     def class_names(...)

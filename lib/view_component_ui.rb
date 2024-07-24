@@ -121,3 +121,4 @@ module ViewComponentUI
     setting :z_index, reader: true, default: Z_INDEX
   end
 end
+
