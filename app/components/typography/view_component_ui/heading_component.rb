@@ -14,11 +14,11 @@ module ViewComponentUI
     prop :level, Types::Coercible::Integer.default(2).enum(1, 2, 3, 4, 5, 6).optional
 
     def font_size
-      initial_props&.dig(:font_size) || FONT_SIZES[level]
+      initial_props&.dig(:font_size) || FONT_SIZES[initial_props[:level] || default_props[:level]]
     end
 
     def as
-      initial_props&.dig(:as) || "h#{level}"
+      initial_props&.dig(:as) || "h#{initial_props[:level] || default_props[:level]}"
     end
   end
 end

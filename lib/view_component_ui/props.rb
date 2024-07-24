@@ -1,9 +1,7 @@
 require 'dry-struct'
 
 module ViewComponentUI
-  class Props < Dry::Struct
-    transform_keys(&:to_sym)
-
+  class Props
     def self.overriden_in(instance)
       values = Types::PROPS.each_with_object({}) do |(prop), hash|
         next unless instance.class.instance_methods(false).include?(prop)
@@ -15,6 +13,10 @@ module ViewComponentUI
     end
 
     delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, :dig, to: :to_h
+
+    def initialize(attributes = {})
+      @attributes = attributes
+    end
 
     def to_h
       @attributes.deep_dup
@@ -30,11 +32,11 @@ module ViewComponentUI
     end
 
     def slice(*keys)
-      new(to_h.slice(*keys))
+      self.class.new(to_h.slice(*keys))
     end
 
     def compact
-      new(to_h.compact)
+      self.class.new(to_h.compact)
     end
 
     def merge(other)
@@ -43,6 +45,10 @@ module ViewComponentUI
 
     def transform_values(&block)
       new(to_h.deep_transform_values(&block))
+    end
+
+    def new(attributes = @attributes)
+      self.class.new(to_h.merge(attributes))
     end
 
     def inspect

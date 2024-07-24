@@ -24,7 +24,7 @@ module ViewComponentUI
       erb_template <<-ERB
         <%= render_self do %>
         <%= render ViewComponentUI::BoxComponent.new(px: 3, pt: 3, pb: 2, cursor: :pointer, _hover: { text_decoration: :underline, text_decoration_thickness: 1 }) do %>
-            <%= title %>
+            <%= props[:title] %>
           <% end %>
           <%= render ViewComponentUI::BoxComponent.new(px: 3, pb: 3, x_show: "activeIndex === index", font_size: :sm, color: 'gray-500') do %>
             <%= content %>

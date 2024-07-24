@@ -6,7 +6,7 @@ module ViewComponentUI
       def prop(*args)
         options = args.extract_options!
         key = options[:required] ? args.first : :"#{args.first}?"
-        props[key] = args.last || Types::Any
+        defined_props[key] = args.last || Types::Any
       end
 
       def default_props(props = {})
@@ -20,11 +20,11 @@ module ViewComponentUI
       def inherited(base)
         super
         base.default_props(_default_props)
-        base.props.merge!(props)
+        base.defined_props.merge!(defined_props)
       end
 
-      def props
-        @props ||= {}
+      def defined_props
+        @defined_props ||= {}
       end
 
       def js(string)
@@ -32,7 +32,7 @@ module ViewComponentUI
       end
 
       def props_type
-        Types::Hash.schema(props).merge(Types::PropTypes)
+        Types::Hash.schema(defined_props).merge(Types::PropTypes)
       end
     end
 
@@ -57,7 +57,7 @@ module ViewComponentUI
       if props[:as].is_a?(ViewComponentUI::Base)
         render props[:as].new(**props.except(:as), &block)
       else
-        content_tag(props[:as], **html_attributes.to_h, &block)
+        content_tag(props.fetch(:as, :div), **html_attributes.to_h, &block)
       end
     end
 

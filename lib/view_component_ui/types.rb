@@ -19,7 +19,7 @@ module ViewComponentUI
     module OfStyleType
       def of_type(type)
         constructor do |value|
-          values = STYLE_PROP_MAP[type].fetch(:values, [])
+          values = Constants::STYLE_PROP_MAP[type].fetch(:values, [])
           values = values.call if values.respond_to?(:call)
           next value if value.nil? || value.respond_to?(:call) || values.any? { _1.to_s.dasherize == value.to_s.dasherize }
 
@@ -75,9 +75,9 @@ module ViewComponentUI
       STYLE_PROP_MAP.map { |key, value| [key, Types::StyleProp.of_type(key)] }.to_h
     ).merge(
       JS_PROPS.map { |key| [key, Types::PropValue] }.to_h
-    ).transform_keys { :"#{_1}?" }
+    )
 
-    BasePropTypes = Types::Hash.schema(PROPS)
+    BasePropTypes = Types::Hash.schema(PROPS.transform_keys { :"#{_1}?" })
 
     BREAKPOINT_PROPS = ViewComponentUI.config.breakpoints.each_with_object({}) do |bp, hash|
       hash[:"_#{bp}?"] = BasePropTypes
@@ -97,8 +97,8 @@ module ViewComponentUI
 
     PseudoClassPropTypes = Types::Hash.schema(PSEUDO_CLASS_PROPS)
 
-    PROPS.merge!(BREAKPOINT_PROPS).merge!(PSEUDO_ELEMENT_PROPS).merge!(PSEUDO_CLASS_PROPS)
+    ALL_PROPS = PROPS.merge(BREAKPOINT_PROPS).merge(PSEUDO_ELEMENT_PROPS).merge(PSEUDO_CLASS_PROPS)
 
-    PropTypes = Types::Hash.schema(PROPS)
+    PropTypes = Types::Hash.schema(ALL_PROPS.transform_keys { _1.to_s.end_with?('?') ? _1 : :"#{_1}?" })
   end
 end
