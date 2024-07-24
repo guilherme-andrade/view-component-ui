@@ -16,10 +16,6 @@ module ViewComponentUI
 
     delegate :[], :fetch, :key?, :keys, :values, :map, :each, :each_with_object, :dig, to: :to_h
 
-    def validate!
-      Types::PropTypes[@attributes]
-    end
-
     def to_h
       @attributes.deep_dup
     end

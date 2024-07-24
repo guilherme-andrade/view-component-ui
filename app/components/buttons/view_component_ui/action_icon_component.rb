@@ -11,7 +11,7 @@ module ViewComponentUI
 
     def call
       render_self do
-        render(ViewComponentUI::IconComponent.new(icon: icon, font_size: props[:font_size]))
+        render(ViewComponentUI::IconComponent.new(icon: props[:icon], font_size: props[:font_size]))
       end
     end
   end

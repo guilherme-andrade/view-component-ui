@@ -1,9 +1,4 @@
 module ViewComponentUI
-  class BoxComponent < StyledComponent
-    def call
-      render_self do
-        content
-      end
-    end
+  class BoxComponent < Base
   end
 end

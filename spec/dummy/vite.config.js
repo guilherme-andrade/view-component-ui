@@ -1,11 +1,10 @@
 // vite.config.js
 import { defineConfig } from "vite";
 
-
 export default defineConfig({
   build: {
     lib: {
-      entry: "/Users/guilhermeandrade/Code/Other/view-component-ui/assets/main.ts",
+      entry: "/Users/guilherme-andrade/code/guilherme-andrade/projects/view-component-ui/assets/main.ts",
       name: "ViewComponentUI",
       fileName: "view-component-ui",
     },
@@ -19,7 +18,7 @@ export default defineConfig({
         },
       },
     },
-    outDir: "/Users/guilhermeandrade/Code/Other/view-component-ui/spec/dummy/public/assets",
+    outDir: "/Users/guilherme-andrade/code/guilherme-andrade/projects/view-component-ui/spec/dummy/public/assets",
     manifest: true
   },
 });

@@ -9,7 +9,7 @@ module ViewComponentUI
     end
 
     def icon_class
-      "fa-#{icon}"
+      "fa-#{props[:icon]}"
     end
   end
 end

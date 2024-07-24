@@ -8,6 +8,7 @@ require 'view_component_ui/engine'
 require 'view_component_ui/constants'
 require 'view_component_ui/props'
 require 'view_component_ui/javascript_code'
+require 'view_component_ui/props_validator'
 
 module ViewComponentUI
   extend Dry::Configurable
