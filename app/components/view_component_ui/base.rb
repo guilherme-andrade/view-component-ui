@@ -55,8 +55,10 @@ module ViewComponentUI
     end
 
     def render_self(&block)
-      if render_props[:as].is_a?(ViewComponentUI::Base)
-        render render_props[:as].new(**render_props.except(:as), &block)
+      if render_props[:as].is_a?(Class) && render_props[:as].ancestors.include?(ViewComponentUI::Base)
+        render render_props[:as].new(**render_props.except(:as).to_h) do
+          block.call
+        end
       else
         content_tag(render_props.fetch(:as, :div), **html_attributes.to_h, &block)
       end

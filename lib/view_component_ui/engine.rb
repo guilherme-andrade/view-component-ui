@@ -15,6 +15,7 @@ module ViewComponentUI
 
     %w[layout forms feedback typography media_and_icons data_display navigation overlay other modal buttons misc].each do
       config.autoload_paths << root.join("app/components/#{_1}")
+      preview_paths.each { |path| config.autoload_paths << path } if Rails.env.development?
     end
 
     config.after_initialize do

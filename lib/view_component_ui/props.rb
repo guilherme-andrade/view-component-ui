@@ -19,7 +19,7 @@ module ViewComponentUI
     end
 
     def to_h
-      @attributes.deep_dup
+      @attributes.dup
     end
 
     def bind(context)
@@ -33,6 +33,10 @@ module ViewComponentUI
 
     def slice(*keys)
       self.class.new(to_h.slice(*keys))
+    end
+
+    def except(*keys)
+      self.class.new(to_h.except(*keys))
     end
 
     def compact
