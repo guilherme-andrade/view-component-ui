@@ -4,6 +4,7 @@ module ViewComponentUI
 
     prop :icon, Types::String
 
+    size :xs, font_size: :xs, w: 4, h: 4, rounded: :sm
     size :sm, font_size: :sm, w: 6, h: 6, rounded: :sm
     size :md, font_size: :base, w: 8, h: 8, rounded: :sm
     size :lg, font_size: :xl, w: 10, h: 10, rounded: :sm

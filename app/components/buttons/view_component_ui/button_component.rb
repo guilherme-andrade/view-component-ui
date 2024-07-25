@@ -42,5 +42,10 @@ module ViewComponentUI
         <%= render(ViewComponentUI::IconComponent.new(icon: render_props[:icon_right], ml: 1)) if render_props[:icon_right] %>
       <% end %>
     ERB
+
+    def render_self(&block)
+      binding.pry
+      super(&block)
+    end
   end
 end

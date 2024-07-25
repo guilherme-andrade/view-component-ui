@@ -3,15 +3,28 @@ module ViewComponentUI
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :sizes
-      self.sizes = {}.with_indifferent_access
+      class_attribute :inherit_sizes, default: true
 
       prop :size, Types::Coercible::Symbol.optional
     end
 
     class_methods do
+      def sizes
+        @sizes ||= begin
+          if inherit_sizes && superclass.respond_to?(:sizes) ? superclass.sizes : {}.with_indifferent_access
+            superclass.sizes.merge(local_sizes)
+          else
+            local_sizes
+          end
+        end
+      end
+
+      def local_sizes
+        @local_sizes ||= {}.with_indifferent_access
+      end
+
       def size(name, **props)
-        sizes[name] = Props.new(props)
+        local_sizes[name] = Props.new(props)
       end
     end
 
@@ -26,10 +39,12 @@ module ViewComponentUI
     end
 
     def default_props
-      base_props = super
-      return base_props unless size_props
+      @default_props ||= begin
+        base_props = super
+        return base_props unless size_props
 
-      base_props.merge(size_props.bind(self))
+        base_props.merge(size_props.bind(self))
+      end
     end
   end
 end
