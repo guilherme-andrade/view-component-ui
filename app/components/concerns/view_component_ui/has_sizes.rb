@@ -11,7 +11,7 @@ module ViewComponentUI
     class_methods do
       def sizes
         @sizes ||= begin
-          if inherit_sizes && superclass.respond_to?(:sizes) ? superclass.sizes : {}.with_indifferent_access
+          if inherit_sizes && superclass.respond_to?(:sizes)
             superclass.sizes.merge(local_sizes)
           else
             local_sizes
