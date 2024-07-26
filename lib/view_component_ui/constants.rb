@@ -16,8 +16,8 @@ module ViewComponentUI
 
     COLOR_WEIGHTS = ([nil] + %i[50 100 200 300 400 500 600 700 800 900]).freeze
     BREAKPOINTS = %i[xs sm md lg xl 2xl].freeze
-    PSEUDO_CLASSES = %i[hover focus active visited disabled active first last first_of_type last_of_type
-                        odd even].freeze
+    PSEUDO_SELECTORS = %i[hover focus active visited disabled active first last first_of_type last_of_type
+                        odd even group_hover].freeze
     PSEUDO_ELEMENTS = %i[before after file first-letter first-line selection backdrop marker].freeze
 
     ALIGN_CONTENT = %i[normal center start end between around evenly baseline stretch].freeze
@@ -56,7 +56,9 @@ module ViewComponentUI
       danger: :rose,
       warning: :yellow,
       info: :teal,
-      gray: :gray
+      neutral: :gray,
+      dark: :black,
+      light: :white
     }.with_indifferent_access.freeze
     COLUMNS = %i[auto 1 2 3 4 5 6 7 8 9 10 11 12 3xs 2xs xs sm md lg xl 2xl 3xl 4xl 5xl 6xl 7xl].freeze
     COLUMN_SPAN = %i[auto 1 2 3 4 5 6 7 8 9 10 11 12 all].freeze
@@ -85,6 +87,7 @@ module ViewComponentUI
     GRID_AUTO_ROWS = %i[auto min max fr].freeze
     GRID_TEMPLATE_COLUMNS = %i[none 1 2 3 4 5 6 7 8 9 10 11 12].freeze
     GRID_TEMPLATE_ROWS = %i[none 1 2 3 4 5 6].freeze
+    GROUP = [true, false].freeze
     SIZES = %i[0 px 0.5 1 1.5 2 2.5 3 3.5 4 5 6 7 8 9 10 11 12 14 16 20 24 28 32 36 40 44 48 52 56 60 64 72
               80 96 auto 1/2 1/3 2/3 1/4 2/4 3/4 1/5 2/5 3/5 4/5 1/6 2/6 3/6 4/6 5/6 full screen min max fit].freeze
     HYPHENS = %i[none manual auto].freeze
@@ -114,7 +117,7 @@ module ViewComponentUI
     POINTER_EVENTS = %i[none auto].freeze
     POSITION = %i[static fixed absolute relative sticky].freeze
     RESIZE = %i[true false none x y].freeze
-    ROTATE = %i[0 1 2 3 6 12 45 90 180].freeze
+    ROTATE = %i[0 1 2 3 6 12 45 90 180].map { [_1, :"-#{_1}"] }.flatten.freeze
     ROW_SPAN = %i[auto 1 2 3 4 5 6 full].freeze
     ROW_START = %i[auto 1 2 3 4 5 6 7].freeze
     ROW_END = %i[auto 1 2 3 4 5 6 7].freeze
@@ -133,6 +136,7 @@ module ViewComponentUI
     TEXT_UNDERLINE_OFFSET = %i[auto 0 1 2 4 8].freeze
     TRANSFORM_ORIGIN = %i[center top-right top top-left right bottom-right bottom bottom-left left].freeze
     TRANSITION = %i[none all colors opacity shadow transform].freeze
+    TRANSLATE = %i[0 0.5 px 1 1.5 2 2.5 3 3.5 4 5 6 7 8 9 10 11 12 14 16 20 24 28 32 36 40 44 48 52 56 60 64 72 80 96 1/2 1/3 2/3 1/4 2/3 2/4 3/4 full].map { [_1, :"-#{_1}"] }.flatten.freeze
     USER_SELECT = %i[none text all auto].freeze
     VERTICAL_ALIGN = %i[top middle bottom baseline text-top text-bottom sub super].freeze
     VISIBILITY = %i[visible invisible collapse].freeze
@@ -149,7 +153,7 @@ module ViewComponentUI
 
     STYLE_PROP_MAP = {
       align_content: { values: ALIGN_CONTENT, token: 'content' },
-      align_items: { values: ALIGN_ITEMS, token: 'items' },
+      align_items: { values: ALIGN_ITEMS, token: 'items', alias: :items },
       backface_visibility: { values: BACKFACE_VISIBILITY, token: 'backface' },
       background: { values: COLOR_WITH_WEIGHTS, token: 'bg', alias: :bg },
       background_attachment: { values: BACKGROUND_ATTACHMENT, token: 'bg' },
@@ -200,14 +204,14 @@ module ViewComponentUI
       columns: { values: proc { ViewComponentUI.config.theme.columns }, token: 'columns' },
       _content: { values: proc { ViewComponentUI.config.theme.content }, token: 'content' },
       cursor: { values: proc { ViewComponentUI.config.theme.cursor }, token: 'cursor' },
-      display: { values: DISPLAY, token: nil },
+      display: { values: DISPLAY, token: nil, alias: :d },
       empty_cells: { values: proc { ViewComponentUI.config.theme.empty_cells }, token: 'empty' },
       end: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'end' },
       fill: { values: COLOR_WITH_WEIGHTS, token: 'fill' },
       flex_basis: { values: proc { ViewComponentUI.config.theme.flex_basis }, token: 'flex' },
       flex_direction: { values: proc { ViewComponentUI.config.theme.flex_direction }, token: 'flex', alias: :direction },
-      flex_grow: { values: proc { ViewComponentUI.config.theme.flex_grow }, token: 'flex' },
-      flex_shrink: { values: proc { ViewComponentUI.config.theme.flex_shrink }, token: 'flex' },
+      flex_grow: { values: proc { ViewComponentUI.config.theme.flex_grow }, token: 'flex', alias: :grow },
+      flex_shrink: { values: proc { ViewComponentUI.config.theme.flex_shrink }, token: 'flex', alias: :shrink },
       flex_wrap: { values: proc { ViewComponentUI.config.theme.flex_wrap }, token: 'flex' },
       flex: { values: proc { ViewComponentUI.config.theme.flex }, token: 'flex' },
       font_family: { values: proc { ViewComponentUI.config.theme.font_family }, token: 'font' },
@@ -218,6 +222,7 @@ module ViewComponentUI
       grid_auto_columns: { values: proc { ViewComponentUI.config.theme.grid_auto_columns }, token: 'auto-cols' },
       grid_auto_flow: { values: proc { ViewComponentUI.config.theme.grid_auto_flow }, token: 'grid-flow' },
       grid_auto_rows: { values: proc { ViewComponentUI.config.theme.grid_auto_rows }, token: 'auto-rows' },
+      group: { values: GROUP, token: 'group' },
       gap: { values: proc { ViewComponentUI.config.theme.spacing }, token: 'gap' },
       gap_x: { values: proc { ViewComponentUI.config.theme.spacing }, token: 'gap-x' },
       gap_y: { values: proc { ViewComponentUI.config.theme.spacing }, token: 'gap-y' },
@@ -229,7 +234,7 @@ module ViewComponentUI
       inset_x: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'inset-x' },
       inset_y: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'inset-y' },
       isolation: { values: proc { ViewComponentUI.config.theme.isolation }, token: 'isolation' },
-      justify_content: { values: proc { ViewComponentUI.config.theme.justify_content }, token: 'justify' },
+      justify_content: { values: proc { ViewComponentUI.config.theme.justify_content }, token: 'justify', alias: :justify },
       justify_items: { values: proc { ViewComponentUI.config.theme.justify_items }, token: 'justify' },
       justify_self: { values: proc { ViewComponentUI.config.theme.justify_self }, token: 'justify' },
       left: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'left' },
@@ -275,7 +280,7 @@ module ViewComponentUI
       position: { values: proc { ViewComponentUI.config.theme.position }, token: nil },
       resize: { values: proc { ViewComponentUI.config.theme.resize }, token: 'resize' },
       right: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'right' },
-      rotate: { values: proc { ViewComponentUI.config.theme.rotate }, token: 'rotate' },
+      rotate: { values: proc { ViewComponentUI.config.theme.rotate }, token: proc { _1.to_s.start_with?('-') ? "-rotate-#{_1.to_s[1..-1]}" : "rotate-#{_1}" } },
       row_gap: { values: proc { ViewComponentUI.config.theme.spacing }, token: 'gap' },
       row_span: { values: proc { ViewComponentUI.config.theme.row_span }, token: 'row-span' },
       row_start: { values: proc { ViewComponentUI.config.theme.row_start }, token: 'row-start' },
@@ -316,7 +321,9 @@ module ViewComponentUI
       text_underline_offset: { values: proc { ViewComponentUI.config.theme.text_underline_offset }, token: 'underline-offset' },
       top: { values: proc { ViewComponentUI.config.theme.sizes }, token: 'top' },
       transform_origin: { values: proc { ViewComponentUI.config.theme.transform_origin }, token: 'origin' },
-      transition: { values: proc { ViewComponentUI.config.theme.transition }, token: 'transition' },
+      transition: { values: proc { TRANSITION + [true] }, token: 'transition' },
+      translate_x: { values: proc { TRANSLATE }, token: proc { _1.to_s.start_with?('-') ? "-translate-#{_1.to_s[1..-1]}" : "translate-#{_1}" } },
+      translate_y: { values: proc { TRANSLATE }, token: proc { _1.to_s.start_with?('-') ? "-translate-y-#{_1.to_s[1..-1]}" : "translate-y-#{_1}" } },
       user_select: { values: proc { ViewComponentUI.config.theme.user_select }, token: 'select' },
       vertical_align: { values: proc { ViewComponentUI.config.theme.vertical_align }, token: 'align' },
       visibility: { values: proc { ViewComponentUI.config.theme.visibility }, token: nil },

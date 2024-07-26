@@ -43,7 +43,7 @@ module ViewComponentUI
         base_props = super
         return base_props unless variant_props
 
-        base_props.merge(variant_props.bind(self))
+        base_props.merge(variant_props)
       end
     end
   end

@@ -9,23 +9,23 @@ module ViewComponentUI
 
     variant :solid,
             color: 'white',
-            bg: proc { color_scheme_token(500) },
-            _hover: { bg: proc { color_scheme_token(600) } }
+            bg: proc { props_color_scheme_token(500) },
+            _hover: { bg: proc { props_color_scheme_token(600) } }
 
     variant :outline,
             border: true,
-            border_color: proc { color_scheme_token(500) },
-            color: proc { color_scheme_token(500) },
-            _hover: { bg: proc { color_scheme_token(500) }, color: 'white' }
+            border_color: proc { props_color_scheme_token(500) },
+            color: proc { props_color_scheme_token(500) },
+            _hover: { bg: proc { props_color_scheme_token(500) }, color: 'white' }
 
     variant :link,
-            color: proc { color_scheme_token(500) },
-            _hover: { color: proc { color_scheme_token(600) } }
+            color: proc { props_color_scheme_token(500) },
+            _hover: { color: proc { props_color_scheme_token(600) } }
 
     variant :ghost,
-            bg: proc { color_scheme_token(50) },
-            color: proc { color_scheme_token(500) },
-            _hover: { bg: proc { color_scheme_token(100) } }
+            bg: proc { props_color_scheme_token(50) },
+            color: proc { props_color_scheme_token(500) },
+            _hover: { bg: proc { props_color_scheme_token(100) } }
 
     size :sm, font_size: :sm, py: '1', px: '2'
     size :md, font_size: :base, py: '2', px: '4'

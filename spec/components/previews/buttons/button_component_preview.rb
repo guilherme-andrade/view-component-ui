@@ -93,7 +93,7 @@ module Buttons
     end
 
     def gray
-      render ViewComponentUI::ButtonComponent.new(color_scheme: :gray) do
+      render ViewComponentUI::ButtonComponent.new(color_scheme: :light) do
         'This is a button.'
       end
     end

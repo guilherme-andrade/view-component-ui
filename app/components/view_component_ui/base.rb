@@ -4,6 +4,8 @@ module ViewComponentUI
 
     InvalidRenderPropsMethodCall = Class.new(StandardError)
 
+    class_attribute :ignored_parent_default_props, default: []
+
     class << self
       def prop(*args)
         options = args.extract_options!
@@ -21,7 +23,7 @@ module ViewComponentUI
 
       def inherited(base)
         super
-        base.default_props(_default_props)
+        base.default_props(_default_props.except(*ignored_parent_default_props))
         base.prop_definitions.merge!(prop_definitions)
       end
 
@@ -36,6 +38,10 @@ module ViewComponentUI
       def props_type
         Types::Hash.schema(prop_definitions).merge(Types::PropTypes)
       end
+
+      def theme_color_scheme
+        ViewComponentUI.config.theme.color_scheme
+      end      
     end
 
     def initialize(...)
@@ -56,11 +62,15 @@ module ViewComponentUI
 
     def render_self(&block)
       if render_props[:as].is_a?(Class) && render_props[:as].ancestors.include?(ViewComponentUI::Base)
-        render render_props[:as].new(**render_props.except(:as).to_h) do
-          block.call
-        end
+        render_as_component(&block)
       else
         content_tag(render_props.fetch(:as, :div), **html_attributes.to_h, &block)
+      end
+    end
+
+    def render_as_component(&block)
+      render render_props[:as].new(**render_props.except(:as).to_h) do
+        block.call
       end
     end
 
@@ -110,5 +120,13 @@ module ViewComponentUI
     def string_class_names(props)
       class_names(props).join(' ')
     end
+
+    def color_scheme_token(scheme, weight)
+      color = self.class.theme_color_scheme.fetch(scheme.to_s.to_sym)
+
+      "#{color}-#{weight}"
+    rescue KeyError
+      raise ArgumentError, "Unknown color scheme: #{scheme}"
+    end    
   end
 end

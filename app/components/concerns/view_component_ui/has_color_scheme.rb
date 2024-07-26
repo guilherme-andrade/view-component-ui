@@ -17,10 +17,8 @@ module ViewComponentUI
       initial_props[:color_scheme] || self.class._default_props[:color_scheme] || self.class.theme_color_scheme.keys.first
     end
 
-    def color_scheme_token(weight)
-      color = self.class.theme_color_scheme.fetch(color_scheme.to_s.to_sym)
-
-      "#{color}-#{weight}"
+    def props_color_scheme_token(weight)
+      color_scheme_token(color_scheme, weight)
     end
   end
 end

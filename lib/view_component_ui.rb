@@ -17,7 +17,7 @@ module ViewComponentUI
 
   setting :output_path, default: proc { Engine.root.join('tmp/view_component_ui/compiler') }
   setting :breakpoints, default: BREAKPOINTS
-  setting :pseudo_classes, default: PSEUDO_CLASSES
+  setting :pseudo_selectors, default: PSEUDO_SELECTORS
   setting :pseudo_elements, default: PSEUDO_ELEMENTS
   setting :content, default: proc {
                                [

@@ -2,7 +2,7 @@ module ViewComponentUI
   class BreadcrumbsComponent < BoxComponent
     include ViewComponentUI::HasSizes
 
-    default_props as: :nav, display: :flex, align_items: :center
+    default_props as: :nav, display: :flex, align_items: :center, font_size: :sm
 
     renders_many :items, "BreadcrumbItemComponent"
 
@@ -18,7 +18,7 @@ module ViewComponentUI
     ERB
 
     class BreadcrumbItemComponent < ViewComponentUI::Base
-      default_props px: 2, py: 1
+      default_props px: 2, py: 1, x_bind: { class: proc { js({ string_class_names(color: color_scheme_token(:neutral, 500)) => js(index == (total - 1)) }) } }
 
       attr_accessor :index, :total
 

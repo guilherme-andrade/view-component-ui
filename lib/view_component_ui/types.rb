@@ -23,6 +23,7 @@ module ViewComponentUI
           values = values.call if values.respond_to?(:call)
           next value if value.nil? || value.respond_to?(:call) || values.any? { _1.to_s.dasherize == value.to_s.dasherize }
 
+          binding.pry
           raise ArgumentError, "#{value.inspect} must be one of #{values.join(', ')}"
         end
       end
@@ -30,8 +31,17 @@ module ViewComponentUI
 
     StyleProp = PropValue.dup.extend(OfStyleType)
 
+    AsComponentClassType = Types::Any.constructor do |value|
+      raise ArgumentError, "#{value.inspect} must be a class that inherits from ViewComponent::Base" unless value <= ViewComponent::Base
+
+      value
+    end
+
+    DSL_PROPS = {
+      as: (Types::Tag | AsComponentClassType).default(:div),
+    }.freeze
+
     HTML_PROPS = {
-      as: (Types::Tag | Types.Instance(ViewComponent::Base)),
       accesskey: Types::StringOrNil,
       class: Types::StringOrNil,
       contenteditable: Types::BoolOrNil,
@@ -71,7 +81,7 @@ module ViewComponentUI
       form: Types::StringOrNil,
     }
 
-    PROPS = HTML_PROPS.merge(
+    PROPS = HTML_PROPS.merge(DSL_PROPS).merge(
       STYLE_PROP_MAP.map { |key, value| [key, Types::StyleProp.of_type(key)] }.to_h
     ).merge(
       JS_PROPS.map { |key| [key, Types::PropValue] }.to_h
@@ -91,7 +101,7 @@ module ViewComponentUI
 
     PseudoElementPropTypes = Types::Hash.schema(PSEUDO_ELEMENT_PROPS)
 
-    PSEUDO_CLASS_PROPS = ViewComponentUI.config.pseudo_classes.each_with_object({}) do |pc, hash|
+    PSEUDO_CLASS_PROPS = ViewComponentUI.config.pseudo_selectors.each_with_object({}) do |pc, hash|
       hash[:"_#{pc}?"] = PseudoElementPropTypes.merge(BreakpointPropTypes).merge(BasePropTypes)
     end
 

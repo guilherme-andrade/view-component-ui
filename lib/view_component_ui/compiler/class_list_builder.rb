@@ -4,10 +4,10 @@ module ViewComponentUI
       extend Dry::Initializer
 
       option :include_breakpoints, default: proc { true }, reader: true
-      option :include_pseudo_classes, default: proc { true }, reader: true
+      option :include_pseudo_selectors, default: proc { true }, reader: true
       option :include_pseudo_elements, default: proc { true }, reader: true
 
-      delegate :pseudo_classes, :pseudo_elements, :breakpoints, to: :config, prefix: :config
+      delegate :pseudo_selectors, :pseudo_elements, :breakpoints, to: :config, prefix: :config
 
       def call(props)
         props = props.to_h
@@ -16,7 +16,7 @@ module ViewComponentUI
         classes << build_style_prop_classes(props)
 
         classes << build_breakpoint_classes(props) if include_breakpoints
-        classes << build_pseudo_classes_classes(props) if include_pseudo_classes
+        classes << build_pseudo_selectors_classes(props) if include_pseudo_selectors
         classes << build_pseudo_elements_classes(props) if include_pseudo_elements
 
         classes.flatten
@@ -39,32 +39,32 @@ module ViewComponentUI
         breakpoint_props(props).each_with_object([]) do |(bp, bp_props), memo|
           classes = builder.call(**bp_props)
 
-          memo << classes.map { "#{bp}:#{_1}" }
+          memo << classes.map { "#{bp.to_s.dasherize}:#{_1}" }
         end
       end
 
-      def build_pseudo_classes_classes(props)
-        builder = ClassListBuilder.new(include_pseudo_classes: false, include_breakpoints: false)
+      def build_pseudo_selectors_classes(props)
+        builder = ClassListBuilder.new(include_pseudo_selectors: false, include_breakpoints: false)
 
-        pseudo_classes_props(props).each_with_object([]) do |(pc, pc_props), memo|
+        pseudo_selectors_props(props).each_with_object([]) do |(pc, pc_props), memo|
           classes = builder.call(**pc_props.to_h.symbolize_keys)
-          memo << classes.map { "#{pc[1..]}:#{_1}" }
+          memo << classes.map { "#{pc[1..].to_s.dasherize}:#{_1}" }
         end
       end
 
       def build_pseudo_elements_classes(props)
-        builder = ClassListBuilder.new(include_pseudo_classes: false, include_pseudo_elements: false,
+        builder = ClassListBuilder.new(include_pseudo_selectors: false, include_pseudo_elements: false,
                                        include_breakpoints: false)
 
         pseudo_elements_props(props).each_with_object([]) do |(pe, pe_props), memo|
           classes = builder.call(**pe_props.to_h.symbolize_keys)
 
-          memo << classes.map { "#{pe[1..]}:#{_1}" }
+          memo << classes.map { "#{pe[1..].to_s.dasherize}:#{_1}" }
         end
       end
 
-      def pseudo_classes_props(props)
-        pseudo_class_utilities = config_pseudo_classes.map { :"_#{_1}" }
+      def pseudo_selectors_props(props)
+        pseudo_class_utilities = config_pseudo_selectors.map { :"_#{_1}" }
         props.slice(*pseudo_class_utilities)
       end
 
@@ -96,7 +96,7 @@ module ViewComponentUI
           token
         in [String, String | Symbol]
           "#{token}-#{value.to_s.dasherize}"
-        in [String, Integer]
+        in [String, Integer | Float | Decimal]
           "#{token}-#{value}"
         in [Proc, _]
           token.call(value)

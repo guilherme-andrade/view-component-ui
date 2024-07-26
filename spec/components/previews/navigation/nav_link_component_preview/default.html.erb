@@ -1,0 +1,39 @@
+<%= render ViewComponentUI::NavLinkComponent.new(to: '#', max_w: 48) do |nav_link| %>
+  <% nav_link.with_left_section(as: ViewComponentUI::IconComponent, icon: :dashboard) %>
+  <% nav_link.with_right_section(as: ViewComponentUI::IconComponent, icon: :'chevron-right', size: :xs) %>
+
+  <% nav_link.with_description do %>
+    Lorem ipsum dolor sit amet.
+  <% end %>
+  
+  Dashboard
+<% end %>
+
+<%= render ViewComponentUI::NavLinkComponent.new(to: '#', max_w: 48, active: true) do |nav_link| %>
+  <% nav_link.with_left_section(as: ViewComponentUI::IconComponent, icon: :info) %>
+  <% nav_link.with_right_section(as: ViewComponentUI::IconComponent, icon: :'chevron-right', size: :xs) %>
+  
+  Active
+<% end %>
+
+
+<%= render ViewComponentUI::NavLinkComponent.new(to: '#', max_w: 48, active: true, variant: :subtle) do |nav_link| %>
+  <% nav_link.with_left_section(as: ViewComponentUI::IconComponent, icon: :info) %>
+  <% nav_link.with_right_section(as: ViewComponentUI::IconComponent, icon: :'chevron-right', size: :xs) %>
+  
+  Active
+<% end %>
+
+<%= render ViewComponentUI::NavLinkComponent.new(to: '#', max_w: 48, active: true, variant: :light) do |nav_link| %>
+  <% nav_link.with_left_section(as: ViewComponentUI::IconComponent, icon: :info) %>
+  <% nav_link.with_right_section(as: ViewComponentUI::IconComponent, icon: :'chevron-right', size: :xs) %>
+  
+  Active
+<% end %>
+
+<%= render ViewComponentUI::NavLinkComponent.new(to: '#', max_w: 48, active: true, variant: :filled) do |nav_link| %>
+  <% nav_link.with_left_section(as: ViewComponentUI::IconComponent, icon: :info) %>
+  <% nav_link.with_right_section(as: ViewComponentUI::IconComponent, icon: :'chevron-right', size: :xs) %>
+  
+  Active
+<% end %>

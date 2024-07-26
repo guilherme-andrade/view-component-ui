@@ -53,7 +53,7 @@ module ViewComponentUI
           hashes = []
           extract_value(value_node, hashes)
           hashes.flatten.map { |h| { key.to_sym => h } }
-        when :int, :str, :sym
+        when :int, :str, :sym, :float
           { key.to_sym => node_text(value_node) }
         when :true
           { key.to_sym => true }
@@ -66,9 +66,9 @@ module ViewComponentUI
 
       def extract_color_scheme_calls(key_node, value_node)
         value = source_code(value_node)
-        return unless value.include?('color_scheme_token')
+        return unless value.include?('props_color_scheme_token')
 
-        match = /color_scheme_token\((\d+)\)/.match(value)
+        match = /props_color_scheme_token\((\d+)\)/.match(value)
         return unless match
 
         weight = match[1].to_i

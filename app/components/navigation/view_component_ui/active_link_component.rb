@@ -6,6 +6,7 @@ module ViewComponentUI
     default_props color: proc { active? ? 'blue-900' : 'blue-600' } # tw-text-blue-900 tw-text-blue-600
 
     def active?
+      return false if props[:disabled].present?
       return active if props[:active].present?
       return false if request.path.blank? || props[:to].blank?
       return request.path == to if props[:exact]
