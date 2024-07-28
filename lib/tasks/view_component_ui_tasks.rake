@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-namespace :view_component_ui do
+namespace :tailwindcss do
   task compile: :environment do
-    require 'view_component_ui/compiler'
-    ViewComponentUI::Compiler::Runner.new.call
+    require 'tailwindcss/compiler'
+    Tailwindcss::Compiler::Runner.new.call
     loop do
     end
   end
 
   task install: :environment do
-    require 'view_component_ui/installer'
-    ViewComponentUI::Installer.new.call
+    require 'tailwindcss/installer'
+    Tailwindcss::Installer.new.call
   end
 end

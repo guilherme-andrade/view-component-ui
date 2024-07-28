@@ -1,6 +1,6 @@
 require 'fileutils'
 
-module ViewComponentUI
+module Tailwindcss
   module Compiler
     class Output
       def add_entry(file_path:, classes:)
@@ -17,7 +17,7 @@ module ViewComponentUI
       end
 
       def output_path
-        ViewComponentUI.config.output_path.call.to_s
+        Tailwindcss.config.output_path.call.to_s
       end
 
       def create_folder(file_path:)
@@ -26,7 +26,7 @@ module ViewComponentUI
       end
 
       def compiled_file_path(file_path:)
-        ViewComponentUI.config.content.each do |folder|
+        Tailwindcss.config.content.each do |folder|
           return File.join(output_path, file_path.delete_prefix(folder.to_s)) if file_path.include?(folder.to_s)
         end
       end

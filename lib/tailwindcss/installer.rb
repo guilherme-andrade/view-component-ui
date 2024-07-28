@@ -1,4 +1,4 @@
-module ViewComponentUI
+module Tailwindcss
   class Installer
     def call
       generate_vite_config_file

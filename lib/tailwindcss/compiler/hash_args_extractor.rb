@@ -1,8 +1,6 @@
 require 'active_support/core_ext/object/blank'
 
-require 'view_component_ui/compiler/class_list_builder'
-
-module ViewComponentUI
+module Tailwindcss
   module Compiler
     class HashArgsExtractor
       def call(ast:)
@@ -72,7 +70,7 @@ module ViewComponentUI
         return unless match
 
         weight = match[1].to_i
-        ViewComponentUI.config.theme.color_scheme.values.map do |color|
+        Tailwindcss.config.theme.color_scheme.values.map do |color|
           { source_code(key_node).to_sym => "#{color}-#{weight}" }
         end
       end

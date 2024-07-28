@@ -23,7 +23,6 @@ module ViewComponentUI
           values = values.call if values.respond_to?(:call)
           next value if value.nil? || value.respond_to?(:call) || values.any? { _1.to_s.dasherize == value.to_s.dasherize }
 
-          binding.pry
           raise ArgumentError, "#{value.inspect} must be one of #{values.join(', ')}"
         end
       end
@@ -81,34 +80,35 @@ module ViewComponentUI
       form: Types::StringOrNil,
     }
 
-    PROPS = HTML_PROPS.merge(DSL_PROPS).merge(
-      STYLE_PROP_MAP.map { |key, value| [key, Types::StyleProp.of_type(key)] }.to_h
-    ).merge(
-      JS_PROPS.map { |key| [key, Types::PropValue] }.to_h
-    )
+    PROPS = HTML_PROPS.merge(DSL_PROPS)
+    # .merge(
+    #   STYLE_PROP_MAP.map { |key, value| [key, Types::StyleProp.of_type(key)] }.to_h
+    # ).merge(
+    #   JS_PROPS.map { |key| [key, Types::PropValue] }.to_h
+    # )
 
-    BasePropTypes = Types::Hash.schema(PROPS.transform_keys { :"#{_1}?" })
+    # BasePropTypes = Types::Hash.schema(PROPS.transform_keys { :"#{_1}?" })
 
-    BREAKPOINT_PROPS = ViewComponentUI.config.breakpoints.each_with_object({}) do |bp, hash|
-      hash[:"_#{bp}?"] = BasePropTypes
-    end
+    # BREAKPOINT_PROPS = ViewComponentUI.config.breakpoints.each_with_object({}) do |bp, hash|
+    #   hash[:"_#{bp}?"] = BasePropTypes
+    # end
 
-    BreakpointPropTypes = Types::Hash.schema(BREAKPOINT_PROPS)
+    # BreakpointPropTypes = Types::Hash.schema(BREAKPOINT_PROPS)
 
-    PSEUDO_ELEMENT_PROPS = ViewComponentUI.config.pseudo_elements.each_with_object({}) do |pe, hash|
-      hash[:"_#{pe}?"] = BreakpointPropTypes.merge(BasePropTypes)
-    end
+    # PSEUDO_ELEMENT_PROPS = ViewComponentUI.config.pseudo_elements.each_with_object({}) do |pe, hash|
+    #   hash[:"_#{pe}?"] = BreakpointPropTypes.merge(BasePropTypes)
+    # end
 
-    PseudoElementPropTypes = Types::Hash.schema(PSEUDO_ELEMENT_PROPS)
+    # PseudoElementPropTypes = Types::Hash.schema(PSEUDO_ELEMENT_PROPS)
 
-    PSEUDO_CLASS_PROPS = ViewComponentUI.config.pseudo_selectors.each_with_object({}) do |pc, hash|
-      hash[:"_#{pc}?"] = PseudoElementPropTypes.merge(BreakpointPropTypes).merge(BasePropTypes)
-    end
+    # PSEUDO_CLASS_PROPS = ViewComponentUI.config.pseudo_selectors.each_with_object({}) do |pc, hash|
+    #   hash[:"_#{pc}?"] = PseudoElementPropTypes.merge(BreakpointPropTypes).merge(BasePropTypes)
+    # end
 
-    PseudoClassPropTypes = Types::Hash.schema(PSEUDO_CLASS_PROPS)
+    # PseudoClassPropTypes = Types::Hash.schema(PSEUDO_CLASS_PROPS)
 
-    ALL_PROPS = PROPS.merge(BREAKPOINT_PROPS).merge(PSEUDO_ELEMENT_PROPS).merge(PSEUDO_CLASS_PROPS)
+    # ALL_PROPS = PROPS.merge(BREAKPOINT_PROPS).merge(PSEUDO_ELEMENT_PROPS).merge(PSEUDO_CLASS_PROPS)
 
-    PropTypes = Types::Hash.schema(ALL_PROPS.transform_keys { _1.to_s.end_with?('?') ? _1 : :"#{_1}?" })
+    PropTypes = Types::Hash.schema(PROPS.transform_keys { _1.to_s.end_with?('?') ? _1 : :"#{_1}?" })
   end
 end

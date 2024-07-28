@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-initializer', '>= 3.0.0'
   spec.add_dependency 'dry-struct', '>= 1.0.0'
   spec.add_dependency 'dry-schema', '>= 1.13.0'
+  spec.add_dependency 'dry-transformer', '>= 1.0.0'
   spec.add_dependency 'dry-types', '>= 1.0.0'
   spec.add_dependency 'rails', '>= 6.0.0'
   spec.add_dependency 'view_component', '>= 3.0.0'

@@ -1,8 +1,8 @@
-module ViewComponentUI
+module Tailwindcss
   module Compiler
     class FileClassesExtractor
-      require 'view_component_ui/compiler/output'
-      require 'view_component_ui/compiler/file_parser'
+      require 'tailwindcss/compiler/output'
+      require 'tailwindcss/compiler/file_parser'
 
       def call(file_path:)
         ast = file_parser.call(file_path:)
@@ -18,7 +18,7 @@ module ViewComponentUI
 
       def file_parser = FileParser.new
 
-      def class_list_builder = ClassListBuilder.new
+      def class_list_builder = StyleAttributesToListConverter.new
     end
   end
 end
